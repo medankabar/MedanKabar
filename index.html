@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Medan Kabar</title>
+  <style>
+    :root {
+      --bg: #fafafa;
+      --text: #000;
+      --card: #fff;
+    }
+
+    body.dark {
+      --bg: #111;
+      --text: #fff;
+      --card: #222;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      text-align: center;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    #loader {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: white;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .spinner::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 4px solid #ddd;
+      border-top: 4px solid #333;
+      animation: spin 1s linear infinite;
+    }
+
+    .spinner img {
+      width: 24px;
+      height: 24px;
+      z-index: 2;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-size: 18px;
+      font-weight: bold;
+      animation: typing 2s steps(20, end) infinite;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 12ch }
+    }
+
+    .container {
+      display: none;
+      padding: 40px 20px;
+    }
+
+    .logo {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background-color: #001f4d;
+      color: white;
+      font-size: 36px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin: 10px 0;
+    }
+
+    p {
+      font-size: 16px;
+      margin-bottom: 30px;
+    }
+
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .social-icons a {
+      display: inline-block;
+      transition: transform 0.3s;
+    }
+
+    .social-icons a:nth-child(1) { transform: translateY(-10px); }
+    .social-icons a:nth-child(2) { transform: translateY(10px); }
+    .social-icons a:nth-child(3) { transform: translateY(-10px); }
+    .social-icons a:nth-child(4) { transform: translateY(10px); }
+    .social-icons a:nth-child(5) { transform: translateY(-10px); }
+    .social-icons a:nth-child(6) { transform: translateY(10px); }
+    .social-icons a:nth-child(7) { transform: translateY(-10px); }
+
+    .social-icons img {
+      width: 20px;
+      height: 20px;
+    }
+
+    .main-link {
+      display: block;
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 16px 0;
+      border: 2px solid var(--text);
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: bold;
+      color: var(--text);
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .main-link:hover {
+      background-color: var(--text);
+      color: var(--bg);
+    }
+
+    .toggle-darkmode {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #ccc;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .toggle-darkmode:before {
+      content: "☀";
+      font-size: 20px;
+    }
+
+    body.dark .toggle-darkmode {
+      background: #444;
+    }
+
+    body.dark .toggle-darkmode:before {
+      content: "🌙";
+    }
+
+    .copyright {
+      font-size: 14px;
+      color: var(--text);
+      margin-top: 60px;
+      margin-bottom: 20px;
+      opacity: 0.6;
+      transition: color 0.3s;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Loader -->
+<div id="loader">
+<div class="spinner">
+  <div class="spin-circle"></div>
+  <img src="loadingspin.jpg" alt="Logo kecil">
+</div>
+  <div class="loading-text">Loading...</div>
+</div>
+
+<!-- Tombol Mode Malam -->
+<button class="toggle-darkmode" onclick="toggleDarkMode()"></button>
+
+<!-- Isi Konten -->
+<div class="container">
+    <div class="logo">
+        <img src="medankabar.jpg" alt="Foto Profil" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
+      </div>
+  <h1>Medan Kabar</h1>
+<p></p>
+
+  <div class="social-icons">
+    <a href="https://www.threads.net/@medankabar?igshid=NTc4MTIwNjQ2YQ==" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png" alt="Instagram"></a>
+    <a href="medankabaroffice@gmail.com"><img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="Email"></a>
+    <a href="https://www.facebook.com/share/199gMVNTqG/" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/145/145802.png" alt="Facebook"></a>
+    <a href="https://youtube.com/@ridhokabar" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"></a>
+    <a href="https://www.threads.net/@medankabar?igshid=NTc4MTIwNjQ2YQ==" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968830.png" alt="Threads"></a>
+    <a href="https://www.tiktok.com/@medankabar.com?utm_campaign=linkinbio&utm_medium=referral&utm_source=later-linkinbio" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/3046/3046120.png" alt="TikTok"></a>
+    <a href="https://api.whatsapp.com/send/?phone=%2B6285358249709&text&type=phone_number&app_absent=0" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp"></a>
+  </div>
+
+  <a class="main-link" href="https://www.medankabar.com" target="_blank">MEDANKABAR.COM</a>
+
+  <footer class="copyright">
+    Mediaga Group || Semua Hak Cipta Dilindungi.
+  </footer>
+</div>
+
+<script>
+  window.onload = function() {
+    setTimeout(() => {
+      document.getElementById("loader").style.display = "none";
+      document.querySelector(".container").style.display = "block";
+    }, 3700);
+  };
+
+  function toggleDarkMode() {
+    document.body.classList.toggle("dark");
+  }
+</script>
+
+</body>
+</html>
