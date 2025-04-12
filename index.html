@@ -197,19 +197,19 @@
 
     .toggle-darkmode {
       position: fixed;
-      top: 20px;
-      right: 20px;
+      top: 15px;
+      right: 15px;
       z-index: 1000;
-      min-width: 96px;
-      padding: 8px 16px;
-      border-radius: 30px;
+      min-width: 80px;
+      padding: 6px 12px;
+      border-radius: 20px;
       font-size: 0;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 4px;
       background: var(--card);
       color: var(--text);
-      border: 2px solid var(--text);
+      border: 1px solid var(--text);
       transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                   transform 0.4s ease,
                   box-shadow 0.3s ease;
@@ -223,21 +223,21 @@
     }
 
     .toggle-darkmode::before {
-      content: '☀';
-      font-size: 20px;
+      content: '🌙';
+      font-size: 16px;
     }
 
     .toggle-darkmode::after {
-      content: 'Terang';
-      font-size: 14px;
+      content: 'Night Mode';
+      font-size: 12px;
     }
 
     body.dark .toggle-darkmode::before {
-      content: '🌙';
+      content: '☀';
     }
 
     body.dark .toggle-darkmode::after {
-      content: 'Night Mode';
+      content: 'Bright Mode';
     }
 
     .copyright {
