@@ -29,7 +29,7 @@
     #loader {
       position: fixed;
       width: 100%;
-      height: 100%;
+      height: 100dvh;
       background: var(--bg);
       z-index: 9999;
       display: flex;
@@ -88,7 +88,7 @@
     
     .container {
       display: none;
-      padding: 60px 20px;
+      padding: 10dvh 5vw;
       opacity: 0;
       transform: translate3d(0, 40px, 0);
       transition: opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
@@ -102,15 +102,15 @@
     }
 
     .logo {
-      width: 100px;
-      height: 100px;
+      width: 12dvh;
+      height: 12dvh;
       border-radius: 50%;
       background-color: #001f4d;
       color: white;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 30px !important;
+      margin: 0 auto 5dvh !important;
       animation: scaleIn 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s both;
       will-change: transform, opacity;
     }
@@ -262,7 +262,7 @@
     /* Responsive Desktop */
     @media (min-width: 768px) {
       .container {
-        padding: 80px 20px;
+        padding: 12dvh 5vw;
       }
       
       h1 {
