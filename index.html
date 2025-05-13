@@ -241,7 +241,7 @@
     function applyDarkMode(isDark) {
       document.documentElement.classList.toggle('dark', isDark);
       toggleBtn.innerHTML = isDark
-        ? '<span class="icon">☀</span> Mode Terang'
+        ? '<span class="icon">☀</span> Bright Mode'
         : '<span class="icon">🌙</span> Night Mode';
       localStorage.setItem('darkMode', isDark);
     }
