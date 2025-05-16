@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="id">
+<!DOCTYPE html><html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,230 +11,239 @@
       --card: #ffffff;
       --accent: #1abc9c;
       --shadow: rgba(0, 0, 0, 0.1);
-    }
+    }.dark {
+  --bg: #1e1e1e;
+  --text: #ecf0f1;
+  --card: #2c2c2c;
+  --accent: #16a085;
+  --shadow: rgba(0, 0, 0, 0.5);
+}
 
-    .dark {
-      --bg: #1e1e1e;
-      --text: #ecf0f1;
-      --card: #2c2c2c;
-      --accent: #16a085;
-      --shadow: rgba(0, 0, 0, 0.5);
-    }
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background-color 0.6s ease, color 0.6s ease;
+}
 
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      overflow-x: hidden;
-      transition: background-color 0.6s ease, color 0.6s ease;
-    }
+.toggle-darkmode {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--accent);
+  border-radius: 30px;
+  padding: 6px 14px;
+  font-size: 0.9rem;
+  display: none;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 8px var(--shadow);
+  cursor: pointer;
+  z-index: 1000;
+  transition: background 0.4s ease, color 0.4s ease;
+  opacity: 0;
+}
 
-    .toggle-darkmode {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: var(--card);
-      color: var(--text);
-      border: 1px solid var(--accent);
-      border-radius: 30px;
-      padding: 6px 14px;
-      font-size: 0.9rem;
-      display: none;
-      align-items: center;
-      gap: 6px;
-      box-shadow: 0 2px 8px var(--shadow);
-      cursor: pointer;
-      z-index: 1000;
-      transition: background 0.4s ease, color 0.4s ease;
-      opacity: 0;
-    }
+.toggle-darkmode.show {
+  display: flex;
+  animation: fadeIn 1s ease forwards;
+}
 
-    .toggle-darkmode.show {
-      display: flex;
-      animation: fadeIn 1s ease forwards;
-    }
+.toggle-darkmode:hover {
+  background: var(--accent);
+  color: #fff;
+}
 
-    .toggle-darkmode:hover {
-      background: var(--accent);
-      color: #fff;
-    }
+.icon {
+  font-size: 1rem;
+}
 
-    .icon {
-      font-size: 1rem;
-    }
+.loader {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 60px;
+  height: 60px;
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid var(--accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  transform: translate(-50%, -50%);
+  z-index: 10000;
+}
 
-    .loader {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      width: 60px;
-      height: 60px;
-      border: 6px solid #f3f3f3;
-      border-top: 6px solid var(--accent);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      transform: translate(-50%, -50%);
-      z-index: 10000;
-    }
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
 
-    @keyframes spin {
-      0% { transform: translate(-50%, -50%) rotate(0deg); }
-      100% { transform: translate(-50%, -50%) rotate(360deg); }
-    }
+.container {
+  margin-top: 90px;
+  padding: 1rem;
+  width: 100%;
+  max-width: 480px;
+  box-sizing: border-box;
+  text-align: center;
+  display: none;
+}
 
-    .container {
-      margin-top: 90px;
-      padding: 1rem;
-      width: 100%;
-      max-width: 480px;
-      box-sizing: border-box;
-      text-align: center;
-      display: none;
-    }
+.fadeInUp {
+  animation: fadeInUp 1s ease forwards;
+}
 
-    .fadeInUp {
-      animation: fadeInUp 1s ease forwards;
-    }
+.fadeIn {
+  animation: fadeIn 1.2s ease forwards;
+}
 
-    .fadeIn {
-      animation: fadeIn 1.2s ease forwards;
-    }
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(40px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+.logo {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 4px 12px var(--shadow);
+  margin: 0 auto 1.2rem;
+  opacity: 0;
+}
 
-    .logo {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      overflow: hidden;
-      box-shadow: 0 4px 12px var(--shadow);
-      margin: 0 auto 1.2rem;
-      opacity: 0;
-    }
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-    .logo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+h1, p, .main-link, .social-icons, footer {
+  opacity: 0;
+}
 
-    h1, p, .main-link, .social-icons, footer {
-      opacity: 0;
-    }
+h1 {
+  font-size: 1.8rem;
+  margin: 0.5rem 0;
+  font-weight: 600;
+  color: var(--accent);
+  transition: all 0.5s ease;
+}
 
-    h1 {
-      font-size: 1.8rem;
-      margin: 0.5rem 0;
-      font-weight: 600;
-      color: var(--accent);
-      transition: all 0.5s ease;
-    }
+p {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
 
-    p {
-      font-size: 1rem;
-      margin-bottom: 1.5rem;
-    }
+.social-icons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 2rem;
+  flex-shrink: 0;
+}
 
-    .social-icons {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(32px, 1fr));
-      gap: 0.6rem;
-      margin-bottom: 2rem;
-      justify-content: center;
-      align-items: center;
-    }
+.social-icons a {
+  background: var(--card);
+  padding: 0.4rem;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px var(--shadow);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+}
 
-    .social-icons a {
-      background: var(--card);
-      padding: 0.4rem;
-      border-radius: 50%;
-      box-shadow: 0 2px 6px var(--shadow);
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+.social-icons a:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 16px var(--accent);
+}
 
-    .social-icons a:hover {
-      transform: scale(1.1);
-      box-shadow: 0 4px 16px var(--accent);
-    }
+.social-icons img {
+  width: 16px;
+  height: 16px;
+}
 
-    .social-icons img {
-      width: 16px;
-      height: 16px;
-    }
+.main-link {
+  background: var(--card);
+  color: var(--text);
+  text-decoration: none;
+  padding: 0.9rem 1.8rem;
+  border: 2px solid var(--text);
+  border-radius: 14px;
+  font-weight: bold;
+  font-size: 2.0rem;
+  box-shadow: 0 4px 12px var(--shadow);
+  transition: all 0.4s ease;
+  margin: 0 auto 2rem;
+  display: inline-block;
+}
 
-    .main-link {
-      background: var(--card);
-      color: var(--text);
-      text-decoration: none;
-      padding: 0.9rem 1.8rem;
-      border: 2px solid var(--text);
-      border-radius: 14px;
-      font-weight: bold;
-      font-size: 2.0rem;
-      box-shadow: 0 4px 12px var(--shadow);
-      transition: all 0.4s ease;
-      margin-bottom:  0 auto  2rem;
-      display: inline-block;
-    }
+.main-link:hover {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
 
+footer {
+  font-size: 0.875rem;
+  text-align: center;
+  color: var(--text);
+  margin-top: 1.5rem;
+}
 
-    .main-link:hover {
-      background: var(--accent);
-      color: white;
-      border-color: var(--accent);
-    }
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem 0.5rem;
+  }
 
-    footer {
-      font-size: 0.875rem;
-      text-align: center;
-      color: var(--text);
-      margin-top: 1.5rem;
-    }
+  .main-link {
+    font-size: 1.4rem;
+    padding: 0.8rem 1.4rem;
+  }
+
+  .social-icons {
+    gap: 0.4rem;
+  }
+}
+
   </style>
 </head>
 <body>
-  <div class="loader" id="loader"></div>
-
-  <button class="toggle-darkmode" id="modeToggle" onclick="toggleDarkMode()">
+  <div class="loader" id="loader"></div>  <button class="toggle-darkmode" id="modeToggle" onclick="toggleDarkMode()">
     <span class="icon">🌙</span> Night Mode
-  </button>
-
-  <div class="container" id="mainContent">
+  </button>  <div class="container" id="mainContent">
     <div class="logo" id="logo"><img src="medankabar.jpg" alt="Logo Medan Kabar" /></div>
     <h1 id="title">Medan Kabar</h1>
-    <p id="desc">Menggali Fakta, Bukan Hanya Headline, Tapi Heartline.</p>
+    <p id="desc">Menggali Fakta, Bukan Hanya Headline, Tapi Heartline.</p><nav class="social-icons" id="socials" aria-label="Sosial Media">
+  <a href="https://www.instagram.com/medankabar?igsh=MTFlc2UyM2p0bGF3dw==" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png" alt="Instagram"></a>
+  <a href="mailto:medankabaroffice@gmail.com"><img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="Email"></a>
+  <a href="https://www.facebook.com/medankabarcom" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/145/145802.png" alt="Facebook"></a>
+  <a href="https://youtube.com/@medankabar?si=5Q4t1qb9T42aUVmMaZPH5E_aem_8es5x97eNXpdMzIUcsqoGg" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"></a>
+  <a href="https://www.threads.com/@medankabar" target="_blank"><img src="https://iili.io/3cZnPBS.png" alt="Threads"></a>
+  <a href="https://www.tiktok.com/@medankabar.com?utm_campaign=linkinbio&utm_medium=referral&utm_source=later-linkinbio" target="_blank"><img src="https://iili.io/3cZIVat.png" alt="TikTok"></a>
+  <a href="https://api.whatsapp.com/send/?phone=%2B6285358249709&text&type=phone_number&app_absent=0" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp"></a>
+</nav>
 
-    <div class="social-icons" id="socials">
-      <a href="https://www.instagram.com/medankabar?igsh=MTFlc2UyM2p0bGF3dw=="><img src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png" alt="Instagram"></a>
-      <a href="mailto:medankabaroffice@gmail.com"><img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="Email"></a>
-      <a href="https://www.facebook.com/medankabarcom"><img src="https://cdn-icons-png.flaticon.com/512/145/145802.png" alt="Facebook"></a>
-      <a href="https://youtube.com/@medankabar?si=5Q4t1qb9T42aUVmMaZPH5E_aem_8es5x97eNXpdMzIUcsqoGg"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"></a>
-      <a href="https://www.threads.com/@medankabar"><img src="https://iili.io/3cZnPBS.png" alt="Threads"></a>
-      <a href="https://www.tiktok.com/@medankabar.com?utm_campaign=linkinbio&utm_medium=referral&utm_source=later-linkinbio"><img src="https://iili.io/3cZIVat.png" alt="TikTok"></a>
-      <a href="https://api.whatsapp.com/send/?phone=%2B6285358249709&text&type=phone_number&app_absent=0"><img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp"></a>
-    </div>
+<a class="main-link" id="mainLink" href="https://www.medankabar.com" target="_blank">MEDANKABAR.COM</a>
+<footer id="footer">&copy; Mediaga Group 2018 || Semua hak cipta dilindungi.</footer>
 
-    <a class="main-link" id="mainLink" href="https://www.medankabar.com" target="_blank">MEDANKABAR.COM</a>
-    <footer id="footer">&copy Mediaga Group 2018 || Semua hak cipta dilindungi.</footer>
-  </div>
-
-  <script>
+  </div>  <script>
     const toggleBtn = document.getElementById('modeToggle');
 
     function applyDarkMode(isDark) {
@@ -266,16 +274,14 @@
         applyDarkMode(isDark);
         toggleBtn.classList.add('show');
 
-        // Animasi elemen satu per satu
         document.getElementById('logo').classList.add('fadeInUp');
         setTimeout(() => document.getElementById('title').classList.add('fadeInUp'), 200);
         setTimeout(() => document.getElementById('desc').classList.add('fadeInUp'), 400);
         setTimeout(() => document.getElementById('socials').classList.add('fadeInUp'), 600);
         setTimeout(() => document.getElementById('mainLink').classList.add('fadeInUp'), 800);
         setTimeout(() => document.getElementById('footer').classList.add('fadeIn'), 1000);
-
-      }, 3000);
+      }, 1500);
     });
   </script>
-</body>
+  </body>
 </html>
