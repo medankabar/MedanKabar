@@ -180,33 +180,56 @@ p {
   height: 16px;
 }
 
-.main-link {
-  background: var(--card);
-  color: var(--text);
-  text-decoration: none;
-  padding: 0.9rem 1.8rem;
-  border: 2px solid var(--text);
-  border-radius: 14px;
-  font-weight: bold;
-  font-size: 2.0rem;
-  box-shadow: 0 4px 12px var(--shadow);
-  transition: all 0.4s ease;
-  margin: 0 auto 2rem;
-  display: inline-block;
-}
+    .main-link {
+      background: var(--card);
+      color: var(--text);
+      text-decoration: none;
+      padding: clamp(0.8rem, 2vw + 0.5rem, 0.9rem) clamp(1.5rem, 4vw + 1rem, 1.8rem);
+      border: 2px solid var(--text);
+      border-radius: 14px;
+      font-weight: bold;
+      font-size: clamp(1.5rem, 5vw + 0.5rem, 2.0rem);
+      box-shadow: 0 4px 12px var(--shadow);
+      transition: all 0.4s ease;
+      margin: 0 auto 2rem;
+      display: inline-block;
+    }
 
-.main-link:hover {
-  background: var(--accent);
-  color: white;
-  border-color: var(--accent);
-}
+    .main-link:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
 
-footer {
-  font-size: 0.875rem;
-  text-align: center;
-  color: var(--text);
-  margin-top: 1.5rem;
-}
+    footer {
+      font-size: 0.875rem;
+      text-align: center;
+      color: var(--text);
+      margin-top: 1.5rem;
+      /* Memastikan footer bisa multiline jika perlu, namun tetap rapi */
+      line-height: 1.5; /* Memberi sedikit spasi antar baris jika ada dua baris */
+      opacity: 0; /* Tetap dikontrol oleh JS untuk animasi */
+    }
+
+    .footer-line {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block; /* Memastikan setiap span menjadi baris sendiri */
+        margin-bottom: 0.2rem; /* Sedikit spasi antar baris footer */
+    }
+
+    .footer-link {
+        color: var(--accent); /* Menggunakan warna aksen untuk link */
+        text-decoration: none;
+        font-weight: 600; /* Sedikit lebih tebal */
+        transition: color 0.3s ease;
+    }
+
+    .footer-link:hover {
+        color: var(--text); /* Berubah warna saat hover */
+        text-decoration: underline;
+    }
 
 @media (max-width: 768px) {
   .container {
@@ -217,6 +240,10 @@ footer {
     font-size: 1.4rem;
     padding: 0.8rem 1.4rem;
   }
+  
+      footer {
+        font-size: 0.75rem;
+      }
 
   .social-icons {
     gap: 0.4rem;
@@ -226,55 +253,82 @@ footer {
   </style>
 </head>
 <body>
-  <div class="loader" id="loader"></div>  <button class="toggle-darkmode" id="modeToggle" onclick="toggleDarkMode()">
+  <div class="loader" id="loader"></div>
+  <button class="toggle-darkmode" id="modeToggle" onclick="toggleDarkMode()">
     <span class="icon">🌙</span> Night Mode
-  </button>  <div class="container" id="mainContent">
+  </button>
+  <div class="container" id="mainContent">
     <div class="logo" id="logo"><img src="medankabar.jpg" alt="Logo Medan Kabar" /></div>
     <h1 id="title">Medan Kabar</h1>
-    <p id="desc">Menggali Fakta, Bukan Hanya Headline, Tapi Heartline.</p><nav class="social-icons" id="socials" aria-label="Sosial Media">
-  <a href="https://www.instagram.com/medankabar?igsh=MTFlc2UyM2p0bGF3dw==" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png" alt="Instagram"></a>
-  <a href="mailto:medankabaroffice@gmail.com"><img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="Email"></a>
-  <a href="https://www.facebook.com/medankabarcom" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/145/145802.png" alt="Facebook"></a>
-  <a href="https://youtube.com/@medankabar?si=5Q4t1qb9T42aUVmMaZPH5E_aem_8es5x97eNXpdMzIUcsqoGg" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"></a>
-  <a href="https://www.threads.com/@medankabar" target="_blank"><img src="https://iili.io/3cZnPBS.png" alt="Threads"></a>
-  <a href="https://www.tiktok.com/@medankabar.com?utm_campaign=linkinbio&utm_medium=referral&utm_source=later-linkinbio" target="_blank"><img src="https://iili.io/3cZIVat.png" alt="TikTok"></a>
-  <a href="https://api.whatsapp.com/send/?phone=%2B6285358249709&text&type=phone_number&app_absent=0" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp"></a>
-</nav>
+    <p id="desc">Menggali Fakta, Bukan Hanya Headline, Tapi Heartline.</p>
+    <nav class="social-icons" id="socials" aria-label="Sosial Media">
+      <a href="https://www.instagram.com/medankabar?igsh=MTFlc2UyM2p0ZGF3dw==" target="_blank" aria-label="Kunjungi Instagram Medan Kabar"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png" alt="Instagram"></a>
+      <a href="mailto:medankabaroffice@gmail.com" aria-label="Kirim Email ke Medan Kabar"><img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="Email"></a>
+      <a href="https://www.facebook.com/medankabarcom" target="_blank" aria-label="Kunjungi Facebook Medan Kabar"><img src="https://cdn-icons-png.flaticon.com/512/145/145802.png" alt="Facebook"></a>
+      <a href="https://www.youtube.com/@medankabar" target="_blank" aria-label="Kunjungi YouTube Medan Kabar"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"></a>
+      <a href="https://www.threads.com/@medankabar" target="_blank" aria-label="Kunjungi Threads Medan Kabar"><img src="https://iili.io/3cZnPBS.png" alt="Threads"></a>
+      <a href="https://www.tiktok.com/@medankabar.com?utm_campaign=linkinbio&utm_medium=referral&utm_source=later-linkinbio" target="_blank" aria-label="Kunjungi TikTok Medan Kabar"><img src="https://iili.io/3cZIVat.png" alt="TikTok"></a>
+      <a href="https://api.whatsapp.com/send/?phone=%2B6285358249709&text=Halo%2C%20saya%20ingin%20bertanya%20tentang%20Medan%20Kabar.&type=phone_number&app_absent=0" target="_blank" aria-label="Kirim Pesan WhatsApp ke Medan Kabar"><img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp"></a>
+    </nav>
 
-<a class="main-link" id="mainLink" href="https://www.medankabar.com" target="_blank">MEDANKABAR.COM</a>
-<footer id="footer">&copy; Mediaga Group 2018 || Semua hak cipta dilindungi.</footer>
+    <a class="main-link" id="mainLink" href="https://www.medankabar.com" target="_blank">MEDANKABAR.COM</a>
+    <footer id="footer"></footer>
 
-  </div>  <script>
+  </div>
+  <script>
     const toggleBtn = document.getElementById('modeToggle');
 
+    // Fungsi untuk menerapkan mode gelap
     function applyDarkMode(isDark) {
       document.documentElement.classList.toggle('dark', isDark);
       toggleBtn.innerHTML = isDark
         ? '<span class="icon">☀</span> Bright Mode'
         : '<span class="icon">🌙</span> Night Mode';
-      localStorage.setItem('darkMode', isDark);
     }
 
+    // Fungsi yang dipanggil saat tombol diklik
     function toggleDarkMode() {
-      const nowDark = document.documentElement.classList.toggle('dark');
-      applyDarkMode(nowDark);
+      const currentlyDark = document.documentElement.classList.contains('dark');
+      applyDarkMode(!currentlyDark);
+    }
+
+    // Fungsi untuk menentukan mode gelap berdasarkan preferensi sistem atau waktu
+    function getAutomaticDarkModeStatus() {
+        const prefersSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const currentHour = new Date().getHours();
+        const isCurrentlyNightTime = currentHour >= 18 || currentHour < 6;
+
+        if (prefersSystemDark) {
+            return true;
+        } else if (isCurrentlyNightTime) {
+            return true;
+        }
+        return false;
     }
 
     window.addEventListener('DOMContentLoaded', () => {
       const loader = document.getElementById('loader');
       const content = document.getElementById('mainContent');
-      const isSaved = localStorage.getItem('darkMode');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const hour = new Date().getHours();
-      const isNight = hour >= 18 || hour < 6;
-      const isDark = isSaved !== null ? isSaved === 'true' : (prefersDark || isNight);
+
+      // Terapkan tahun dinamis di footer
+      const footer = document.getElementById('footer');
+      const currentYear = new Date().getFullYear();
+      // Konten footer disesuaikan agar lebih fleksibel dengan dua baris
+      footer.innerHTML = `
+        <span class="footer-line">© Mediaga Group 2018 - ${currentYear} || Semua hak cipta dilindungi.</span>
+        <span class="footer-line">Made by: <a href="https://ridhosandhika2006.github.io/Website-Portfolio/" target="_blank" class="footer-link">Studioofficialridho</a></span>
+      `;
+
 
       setTimeout(() => {
         loader.style.display = 'none';
         content.style.display = 'block';
-        applyDarkMode(isDark);
         toggleBtn.classList.add('show');
 
+        // Terapkan mode gelap otomatis saat halaman dimuat
+        applyDarkMode(getAutomaticDarkModeStatus());
+
+        // Animasi elemen
         document.getElementById('logo').classList.add('fadeInUp');
         setTimeout(() => document.getElementById('title').classList.add('fadeInUp'), 200);
         setTimeout(() => document.getElementById('desc').classList.add('fadeInUp'), 400);
@@ -282,6 +336,11 @@ footer {
         setTimeout(() => document.getElementById('mainLink').classList.add('fadeInUp'), 800);
         setTimeout(() => document.getElementById('footer').classList.add('fadeIn'), 1000);
       }, 1500);
+
+      // Listener untuk memantau perubahan preferensi sistem
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+          applyDarkMode(getAutomaticDarkModeStatus());
+      });
     });
   </script>
   </body>
