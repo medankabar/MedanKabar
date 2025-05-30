@@ -6,180 +6,195 @@
   <title>Medan Kabar</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
   <style>
+    /* Variabel CSS untuk tema terang dan gelap */
     :root {
       --bg: #f4f7fc;
       --text: #2c3e50;
       --card: #ffffff;
       --accent: #1abc9c;
       --shadow: rgba(0, 0, 0, 0.1);
-    }.dark {
-  --bg: #1e1e1e;
-  --text: #ecf0f1;
-  --card: #2c2c2c;
-  --accent: #16a085;
-  --shadow: rgba(0, 0, 0, 0.5);
-}
+    }
+    .dark {
+      --bg: #1e1e1e;
+      --text: #ecf0f1;
+      --card: #2c2c2c;
+      --accent: #16a085;
+      --shadow: rgba(0, 0, 0, 0.5);
+    }
 
-body {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background-color: var(--bg);
-  color: var(--text);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-  overflow-x: hidden;
-  transition: background-color 0.6s ease, color 0.6s ease;
-}
+    /* Gaya dasar body */
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: background-color 0.6s ease, color 0.6s ease;
+    }
 
-.toggle-darkmode {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: var(--card);
-  color: var(--text);
-  border: 1px solid var(--accent);
-  border-radius: 30px;
-  padding: 6px 14px;
-  font-size: 0.9rem;
-  display: none;
-  align-items: center;
-  gap: 6px;
-  box-shadow: 0 2px 8px var(--shadow);
-  cursor: pointer;
-  z-index: 1000;
-  transition: background 0.4s ease, color 0.4s ease;
-  opacity: 0;
-}
+    /* Gaya tombol toggle dark mode */
+    .toggle-darkmode {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--accent);
+      border-radius: 30px;
+      padding: 6px 14px;
+      font-size: 0.9rem;
+      display: none; /* Disembunyikan secara default, akan ditampilkan dengan JS */
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 8px var(--shadow);
+      cursor: pointer;
+      z-index: 1000;
+      transition: background 0.4s ease, color 0.4s ease;
+      opacity: 0; /* Untuk animasi fade-in */
+    }
 
-.toggle-darkmode.show {
-  display: flex;
-  animation: fadeIn 1s ease forwards;
-}
+    .toggle-darkmode.show {
+      display: flex; /* Ditampilkan saat ada kelas .show */
+      animation: fadeIn 1s ease forwards;
+    }
 
-.toggle-darkmode:hover {
-  background: var(--accent);
-  color: #fff;
-}
+    .toggle-darkmode:hover {
+      background: var(--accent);
+      color: #fff;
+    }
 
-.icon {
-  font-size: 1rem;
-}
+    .icon {
+      font-size: 1rem;
+    }
 
-.loader {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 60px;
-  height: 60px;
-  border: 6px solid #f3f3f3;
-  border-top: 6px solid var(--accent);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  transform: translate(-50%, -50%);
-  z-index: 10000;
-}
+    /* Gaya Loader */
+    .loader {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 60px;
+      height: 60px;
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      transform: translate(-50%, -50%);
+      z-index: 10000;
+    }
 
-@keyframes spin {
-  0% { transform: translate(-50%, -50%) rotate(0deg); }
-  100% { transform: translate(-50%, -50%) rotate(360deg); }
-}
+    /* Keyframes untuk animasi spin loader */
+    @keyframes spin {
+      0% { transform: translate(-50%, -50%) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
 
-.container {
-  margin-top: 90px;
-  padding: 1rem;
-  width: 100%;
-  max-width: 480px;
-  box-sizing: border-box;
-  text-align: center;
-  display: none;
-}
+    /* Gaya kontainer utama */
+    .container {
+      margin-top: 90px;
+      padding: 1rem;
+      width: 100%;
+      max-width: 480px;
+      box-sizing: border-box;
+      text-align: center;
+      display: none; /* Disembunyikan secara default, akan ditampilkan dengan JS */
+    }
 
-.fadeInUp {
-  animation: fadeInUp 1s ease forwards;
-}
+    /* Kelas animasi */
+    .fadeInUp {
+      animation: fadeInUp 1s ease forwards;
+    }
 
-.fadeIn {
-  animation: fadeIn 1.2s ease forwards;
-}
+    .fadeIn {
+      animation: fadeIn 1.2s ease forwards;
+    }
 
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(40px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+    /* Keyframes untuk animasi fade in up dan fade in */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
 
-.logo {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  overflow: hidden;
-  box-shadow: 0 4px 12px var(--shadow);
-  margin: 0 auto 1.2rem;
-  opacity: 0;
-}
+    /* Gaya logo */
+    .logo {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow: 0 4px 12px var(--shadow);
+      margin: 0 auto 1.2rem;
+      opacity: 0; /* Untuk animasi */
+    }
 
-.logo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+    .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-h1, p, .main-link, .social-icons, footer {
-  opacity: 0;
-}
+    /* Elemen yang akan dianimasikan, disembunyikan secara default */
+    h1, p, .main-link, .social-icons, footer {
+      opacity: 0;
+    }
 
-h1 {
-  font-size: 1.8rem;
-  margin: 0.5rem 0;
-  font-weight: 600;
-  color: var(--accent);
-  transition: all 0.5s ease;
-}
+    /* Gaya judul h1 */
+    h1 {
+      font-size: 1.8rem;
+      margin: 0.5rem 0;
+      font-weight: 600;
+      color: var(--accent);
+      transition: all 0.5s ease;
+    }
 
-p {
-  font-size: 1rem;
-  margin-bottom: 1.5rem;
-}
+    /* Gaya paragraf */
+    p {
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
 
-.social-icons {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 0.6rem;
-  margin-bottom: 2rem;
-  flex-shrink: 0;
-}
+    /* Gaya ikon sosial media */
+    .social-icons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 2rem;
+      flex-shrink: 0;
+    }
 
-.social-icons a {
-  background: var(--card);
-  padding: 0.4rem;
-  border-radius: 50%;
-  box-shadow: 0 2px 6px var(--shadow);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 26px;
-  height: 26px;
-}
+    .social-icons a {
+      background: var(--card);
+      padding: 0.4rem;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px var(--shadow);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+    }
 
-.social-icons a:hover {
-  transform: scale(1.1);
-  box-shadow: 0 4px 16px var(--accent);
-}
+    .social-icons a:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 16px var(--accent);
+    }
 
-.social-icons img {
-  width: 16px;
-  height: 16px;
-}
+    .social-icons img {
+      width: 16px;
+      height: 16px;
+    }
 
+    /* Gaya tautan utama */
     .main-link {
       background: var(--card);
       color: var(--text);
@@ -201,55 +216,55 @@ p {
       border-color: var(--accent);
     }
 
+    /* Gaya footer */
     footer {
       font-size: 0.875rem;
       text-align: center;
       color: var(--text);
       margin-top: 1.5rem;
-      /* Memastikan footer bisa multiline jika perlu, namun tetap rapi */
-      line-height: 1.5; /* Memberi sedikit spasi antar baris jika ada dua baris */
-      opacity: 0; /* Tetap dikontrol oleh JS untuk animasi */
+      line-height: 1.5;
+      opacity: 0;
     }
 
     .footer-line {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        display: block; /* Memastikan setiap span menjadi baris sendiri */
-        margin-bottom: 0.2rem; /* Sedikit spasi antar baris footer */
+        display: block;
+        margin-bottom: 0.2rem;
     }
 
     .footer-link {
-        color: var(--accent); /* Menggunakan warna aksen untuk link */
+        color: var(--accent);
         text-decoration: none;
-        font-weight: 600; /* Sedikit lebih tebal */
+        font-weight: 600;
         transition: color 0.3s ease;
     }
 
     .footer-link:hover {
-        color: var(--text); /* Berubah warna saat hover */
+        color: var(--text);
         text-decoration: underline;
     }
 
-@media (max-width: 768px) {
-  .container {
-    padding: 1rem 0.5rem;
-  }
+    /* Media queries untuk responsivitas */
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem 0.5rem;
+      }
 
-  .main-link {
-    font-size: 1.4rem;
-    padding: 0.8rem 1.4rem;
-  }
-  
+      .main-link {
+        font-size: 1.4rem;
+        padding: 0.8rem 1.4rem;
+      }
+
       footer {
         font-size: 0.75rem;
       }
 
-  .social-icons {
-    gap: 0.4rem;
-  }
-}
-
+      .social-icons {
+        gap: 0.4rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -277,6 +292,8 @@ p {
   </div>
   <script>
     const toggleBtn = document.getElementById('modeToggle');
+    // Variabel untuk melacak apakah pengguna telah secara manual mengesampingkan mode otomatis
+    let isManualOverride = false;
 
     // Fungsi untuk menerapkan mode gelap
     function applyDarkMode(isDark) {
@@ -290,13 +307,15 @@ p {
     function toggleDarkMode() {
       const currentlyDark = document.documentElement.classList.contains('dark');
       applyDarkMode(!currentlyDark);
+      // Setel isManualOverride menjadi true setelah tombol ditekan
+      isManualOverride = true;
     }
 
     // Fungsi untuk menentukan mode gelap berdasarkan preferensi sistem atau waktu
     function getAutomaticDarkModeStatus() {
         const prefersSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         const currentHour = new Date().getHours();
-        const isCurrentlyNightTime = currentHour >= 18 || currentHour < 6;
+        const isCurrentlyNightTime = currentHour >= 18 || currentHour < 6; // Antara jam 6 sore sampai sebelum jam 6 pagi
 
         if (prefersSystemDark) {
             return true;
@@ -313,7 +332,6 @@ p {
       // Terapkan tahun dinamis di footer
       const footer = document.getElementById('footer');
       const currentYear = new Date().getFullYear();
-      // Konten footer disesuaikan agar lebih fleksibel dengan dua baris
       footer.innerHTML = `
         <span class="footer-line">© Mediaga Group ${currentYear} - Semua hak cipta dilindungi.</span>
         <span class="footer-line">Made by: <a href="https://ridhosandhika2006.github.io/Website-Portfolio/" target="_blank" class="footer-link">Studioofficialridho</a></span>
@@ -325,8 +343,10 @@ p {
         content.style.display = 'block';
         toggleBtn.classList.add('show');
 
-        // Terapkan mode gelap otomatis saat halaman dimuat
-        applyDarkMode(getAutomaticDarkModeStatus());
+        // Terapkan mode gelap otomatis hanya jika belum ada override manual
+        if (!isManualOverride) {
+            applyDarkMode(getAutomaticDarkModeStatus());
+        }
 
         // Animasi elemen
         document.getElementById('logo').classList.add('fadeInUp');
@@ -338,10 +358,13 @@ p {
       }, 1500);
 
       // Listener untuk memantau perubahan preferensi sistem
+      // Penting: hanya terapkan perubahan otomatis jika tidak ada override manual
       window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-          applyDarkMode(getAutomaticDarkModeStatus());
+          if (!isManualOverride) {
+              applyDarkMode(getAutomaticDarkModeStatus());
+          }
       });
     });
   </script>
-  </body>
+</body>
 </html>
