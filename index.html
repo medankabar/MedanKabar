@@ -6,6 +6,26 @@
   <title>Medan Kabar</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
   <style>
+    /* --- ANTI COPY PASTE CSS (LAYER 1) --- */
+    body {
+      -webkit-user-select: none; /* Safari */
+      -moz-user-select: none;    /* Firefox */
+      -ms-user-select: none;     /* IE10+/Edge */
+      user-select: none;         /* Standard */
+    }
+    
+    /* Mencegah gambar didrag/diseret */
+    img {
+      -webkit-user-drag: none;
+      user-drag: none;
+      pointer-events: none; /* Opsional: agar gambar tidak bisa diklik kanan sama sekali */
+    }
+    
+    /* Kembalikan pointer events untuk link agar tetap bisa diklik */
+    a img {
+      pointer-events: auto; 
+    }
+
     /* Variabel CSS untuk tema terang dan gelap */
     :root {
       --bg: #f4f7fc;
@@ -34,6 +54,7 @@
       min-height: 100vh;
       overflow-x: hidden;
       transition: background-color 0.6s ease, color 0.6s ease;
+      cursor: default; /* Mengubah kursor teks menjadi panah biasa */
     }
 
     /* Gaya tombol toggle dark mode */
@@ -47,18 +68,18 @@
       border-radius: 30px;
       padding: 6px 14px;
       font-size: 0.9rem;
-      display: none; /* Disembunyikan secara default, akan ditampilkan dengan JS */
+      display: none;
       align-items: center;
       gap: 6px;
       box-shadow: 0 2px 8px var(--shadow);
       cursor: pointer;
       z-index: 1000;
       transition: background 0.4s ease, color 0.4s ease;
-      opacity: 0; /* Untuk animasi fade-in */
+      opacity: 0;
     }
 
     .toggle-darkmode.show {
-      display: flex; /* Ditampilkan saat ada kelas .show */
+      display: flex;
       animation: fadeIn 1s ease forwards;
     }
 
@@ -86,7 +107,6 @@
       z-index: 10000;
     }
 
-    /* Keyframes untuk animasi spin loader */
     @keyframes spin {
       0% { transform: translate(-50%, -50%) rotate(0deg); }
       100% { transform: translate(-50%, -50%) rotate(360deg); }
@@ -100,10 +120,9 @@
       max-width: 480px;
       box-sizing: border-box;
       text-align: center;
-      display: none; /* Disembunyikan secara default, akan ditampilkan dengan JS */
+      display: none;
     }
 
-    /* Kelas animasi */
     .fadeInUp {
       animation: fadeInUp 1s ease forwards;
     }
@@ -112,7 +131,6 @@
       animation: fadeIn 1.2s ease forwards;
     }
 
-    /* Keyframes untuk animasi fade in up dan fade in */
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(40px); }
       to { opacity: 1; transform: translateY(0); }
@@ -131,7 +149,7 @@
       overflow: hidden;
       box-shadow: 0 4px 12px var(--shadow);
       margin: 0 auto 1.2rem;
-      opacity: 0; /* Untuk animasi */
+      opacity: 0;
     }
 
     .logo img {
@@ -140,12 +158,10 @@
       object-fit: cover;
     }
 
-    /* Elemen yang akan dianimasikan, disembunyikan secara default */
     h1, p, .main-link, .social-icons, footer {
       opacity: 0;
     }
 
-    /* Gaya judul h1 */
     h1 {
       font-size: 1.8rem;
       margin: 0.5rem 0;
@@ -154,13 +170,11 @@
       transition: all 0.5s ease;
     }
 
-    /* Gaya paragraf */
     p {
       font-size: 1rem;
       margin-bottom: 1.5rem;
     }
 
-    /* Gaya ikon sosial media */
     .social-icons {
       display: flex;
       flex-wrap: wrap;
@@ -194,7 +208,6 @@
       height: 16px;
     }
 
-    /* Gaya tautan utama */
     .main-link {
       background: var(--card);
       color: var(--text);
@@ -216,7 +229,6 @@
       border-color: var(--accent);
     }
 
-    /* Gaya footer */
     footer {
       font-size: 0.875rem;
       text-align: center;
@@ -246,7 +258,6 @@
         text-decoration: underline;
     }
 
-    /* Media queries untuk responsivitas */
     @media (max-width: 768px) {
       .container {
         padding: 1rem 0.5rem;
@@ -267,7 +278,7 @@
     }
   </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
   <div class="loader" id="loader"></div>
   <button class="toggle-darkmode" id="modeToggle" onclick="toggleDarkMode()">
     <span class="icon">🌙</span> Night Mode
@@ -292,10 +303,8 @@
   </div>
   <script>
     const toggleBtn = document.getElementById('modeToggle');
-    // Variabel untuk melacak apakah pengguna telah secara manual mengesampingkan mode otomatis
     let isManualOverride = false;
 
-    // Fungsi untuk menerapkan mode gelap
     function applyDarkMode(isDark) {
       document.documentElement.classList.toggle('dark', isDark);
       toggleBtn.innerHTML = isDark
@@ -303,19 +312,16 @@
         : '<span class="icon">🌙</span> Night Mode';
     }
 
-    // Fungsi yang dipanggil saat tombol diklik
     function toggleDarkMode() {
       const currentlyDark = document.documentElement.classList.contains('dark');
       applyDarkMode(!currentlyDark);
-      // Setel isManualOverride menjadi true setelah tombol ditekan
       isManualOverride = true;
     }
 
-    // Fungsi untuk menentukan mode gelap berdasarkan preferensi sistem atau waktu
     function getAutomaticDarkModeStatus() {
         const prefersSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         const currentHour = new Date().getHours();
-        const isCurrentlyNightTime = currentHour >= 18 || currentHour < 6; // Antara jam 6 sore sampai sebelum jam 6 pagi
+        const isCurrentlyNightTime = currentHour >= 18 || currentHour < 6;
 
         if (prefersSystemDark) {
             return true;
@@ -328,27 +334,23 @@
     window.addEventListener('DOMContentLoaded', () => {
       const loader = document.getElementById('loader');
       const content = document.getElementById('mainContent');
-
-      // Terapkan tahun dinamis di footer
       const footer = document.getElementById('footer');
       const currentYear = new Date().getFullYear();
+      
       footer.innerHTML = `
         <span class="footer-line">© Mediaga Group ${currentYear} - Semua hak cipta dilindungi.</span>
-        <span class="footer-line">Made by: <a href="https://studioofficialridho.github.io/ratecard/" target="_blank" class="footer-link">Studioofficialridho</a></span>
+        <span class="footer-line">Made by: <a href="https://appwebiatech.github.io/AppWebiatech/" target="_blank" class="footer-link">AppWebiatecth</a></span>
       `;
-
 
       setTimeout(() => {
         loader.style.display = 'none';
         content.style.display = 'block';
         toggleBtn.classList.add('show');
 
-        // Terapkan mode gelap otomatis hanya jika belum ada override manual
         if (!isManualOverride) {
             applyDarkMode(getAutomaticDarkModeStatus());
         }
 
-        // Animasi elemen
         document.getElementById('logo').classList.add('fadeInUp');
         setTimeout(() => document.getElementById('title').classList.add('fadeInUp'), 200);
         setTimeout(() => document.getElementById('desc').classList.add('fadeInUp'), 400);
@@ -357,35 +359,74 @@
         setTimeout(() => document.getElementById('footer').classList.add('fadeIn'), 1000);
       }, 1500);
 
-      // Listener untuk memantau perubahan preferensi sistem
-      // Penting: hanya terapkan perubahan otomatis jika tidak ada override manual
       window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
           if (!isManualOverride) {
               applyDarkMode(getAutomaticDarkModeStatus());
           }
       });
     });
-            // Mencegah Klik Kanan
-        document.addEventListener('contextmenu', event => event.preventDefault());
 
-        // Mencegah Shortcut Keyboard (Ctrl+C, Ctrl+U, F12, Ctrl+Shift+I)
-        document.onkeydown = function(e) {
-            if(event.keyCode == 123) { // F12
-               return false;
+    // --- 4. FITUR KEAMANAN TAMBAHAN (PERLINDUNGAN PENUH) ---
+    
+    // Mencegah Klik Kanan (Context Menu)
+    document.addEventListener('contextmenu', event => event.preventDefault());
+
+    // Mencegah Seleksi/Blok Teks (Double Protection dengan CSS)
+    document.addEventListener('selectstart', event => event.preventDefault());
+
+    // Mencegah Drag Gambar (Agar tidak bisa ditarik ke tab baru)
+    document.addEventListener('dragstart', event => event.preventDefault());
+
+    // Mencegah Shortcut Keyboard
+    document.addEventListener('keydown', function(e) {
+        // Mencegah F12 (Inspect Element)
+        if (e.key === 'F12' || e.keyCode === 123) {
+            e.preventDefault();
+            return false;
+        }
+
+        // Mencegah kombinasi Ctrl
+        if (e.ctrlKey) {
+            // Ctrl+U (View Source)
+            if (e.key === 'u' || e.key === 'U' || e.keyCode === 85) {
+                e.preventDefault();
+                return false;
             }
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { // Ctrl+Shift+I
-               return false;
+            // Ctrl+C (Copy)
+            if (e.key === 'c' || e.key === 'C' || e.keyCode === 67) {
+                e.preventDefault();
+                return false;
             }
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) { // Ctrl+Shift+C
-               return false;
+            // Ctrl+S (Save Page)
+            if (e.key === 's' || e.key === 'S' || e.keyCode === 83) {
+                e.preventDefault();
+                return false;
             }
-            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { // Ctrl+U (View Source)
-               return false;
+            // Ctrl+P (Print)
+            if (e.key === 'p' || e.key === 'P' || e.keyCode === 80) {
+                e.preventDefault();
+                return false;
             }
-            if(e.ctrlKey && e.keyCode == 'C'.charCodeAt(0)) { // Ctrl+C (Copy)
-               return false;
+            // Ctrl+A (Select All)
+            if (e.key === 'a' || e.key === 'A' || e.keyCode === 65) {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+Shift+I atau Ctrl+Shift+J (Inspect Console)
+            if (e.shiftKey && (
+                e.key === 'i' || e.key === 'I' || e.keyCode === 73 ||
+                e.key === 'j' || e.key === 'J' || e.keyCode === 74
+            )) {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+Shift+C (Inspect Element Selector)
+            if (e.shiftKey && (e.key === 'c' || e.key === 'C' || e.keyCode === 67)) {
+                e.preventDefault();
+                return false;
             }
         }
+    });
   </script>
 </body>
 </html>
