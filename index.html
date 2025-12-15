@@ -3,9 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Medan Kabar</title>
+  
+  <title>Medan Kabar - Official Links Bio</title>
+  <meta name="description" content="Menggali Fakta, Bukan Hanya Headline, Tapi Heartline. Portal berita terpercaya.">
+  <meta name="theme-color" content="#1abc9c">
+  
+  <link rel="shortcut icon" href="MedanKabar.jpg" type="image/x-icon">
+
+  <meta property="og:title" content="Medan Kabar - Official Links">
+  <meta property="og:description" content="Menggali Fakta, Bukan Hanya Headline, Tapi Heartline.">
+  <meta property="og:image" content="https://www.medankabar.com/MedanKabar.jpg"> 
+  <meta property="og:url" content="https://www.medankabar.com">
+  <meta property="og:type" content="website">
+
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
   <style>
+    /* --- CSS TAMBAHAN AGAR SEPERTI APLIKASI (Hapus Highlight Biru saat Klik) --- */
+    * {
+        -webkit-tap-highlight-color: transparent;
+    }
+
     /* --- ANTI COPY PASTE CSS (LAYER 1) --- */
     body {
       -webkit-user-select: none; /* Safari */
@@ -18,7 +35,7 @@
     img {
       -webkit-user-drag: none;
       user-drag: none;
-      pointer-events: none; /* Opsional: agar gambar tidak bisa diklik kanan sama sekali */
+      pointer-events: none; 
     }
     
     /* Kembalikan pointer events untuk link agar tetap bisa diklik */
@@ -54,7 +71,7 @@
       min-height: 100vh;
       overflow-x: hidden;
       transition: background-color 0.6s ease, color 0.6s ease;
-      cursor: default; /* Mengubah kursor teks menjadi panah biasa */
+      cursor: default; 
     }
 
     /* Gaya tombol toggle dark mode */
@@ -339,7 +356,7 @@
       
       footer.innerHTML = `
         <span class="footer-line">© Mediaga Group ${currentYear} - Semua hak cipta dilindungi.</span>
-        <span class="footer-line">Made by: <a href="https://appwebiatech.github.io/AppWebiatech/" target="_blank" class="footer-link">AppWebiatecth</a></span>
+        <span class="footer-line">Made by: <a href="https://appwebiatech.github.io/AppWebiatech/" target="_blank" class="footer-link">AppWebiatech</a></span>
       `;
 
       setTimeout(() => {
@@ -366,65 +383,24 @@
       });
     });
 
-    // --- 4. FITUR KEAMANAN TAMBAHAN (PERLINDUNGAN PENUH) ---
-    
+    // --- FITUR KEAMANAN TAMBAHAN (PERLINDUNGAN PENUH) ---
     // Mencegah Klik Kanan (Context Menu)
     document.addEventListener('contextmenu', event => event.preventDefault());
-
-    // Mencegah Seleksi/Blok Teks (Double Protection dengan CSS)
+    // Mencegah Seleksi/Blok Teks
     document.addEventListener('selectstart', event => event.preventDefault());
-
-    // Mencegah Drag Gambar (Agar tidak bisa ditarik ke tab baru)
+    // Mencegah Drag Gambar
     document.addEventListener('dragstart', event => event.preventDefault());
-
     // Mencegah Shortcut Keyboard
     document.addEventListener('keydown', function(e) {
-        // Mencegah F12 (Inspect Element)
-        if (e.key === 'F12' || e.keyCode === 123) {
-            e.preventDefault();
-            return false;
-        }
-
-        // Mencegah kombinasi Ctrl
+        if (e.key === 'F12' || e.keyCode === 123) { e.preventDefault(); return false; }
         if (e.ctrlKey) {
-            // Ctrl+U (View Source)
-            if (e.key === 'u' || e.key === 'U' || e.keyCode === 85) {
-                e.preventDefault();
-                return false;
-            }
-            // Ctrl+C (Copy)
-            if (e.key === 'c' || e.key === 'C' || e.keyCode === 67) {
-                e.preventDefault();
-                return false;
-            }
-            // Ctrl+S (Save Page)
-            if (e.key === 's' || e.key === 'S' || e.keyCode === 83) {
-                e.preventDefault();
-                return false;
-            }
-            // Ctrl+P (Print)
-            if (e.key === 'p' || e.key === 'P' || e.keyCode === 80) {
-                e.preventDefault();
-                return false;
-            }
-            // Ctrl+A (Select All)
-            if (e.key === 'a' || e.key === 'A' || e.keyCode === 65) {
-                e.preventDefault();
-                return false;
-            }
-            // Ctrl+Shift+I atau Ctrl+Shift+J (Inspect Console)
-            if (e.shiftKey && (
-                e.key === 'i' || e.key === 'I' || e.keyCode === 73 ||
-                e.key === 'j' || e.key === 'J' || e.keyCode === 74
-            )) {
-                e.preventDefault();
-                return false;
-            }
-            // Ctrl+Shift+C (Inspect Element Selector)
-            if (e.shiftKey && (e.key === 'c' || e.key === 'C' || e.keyCode === 67)) {
-                e.preventDefault();
-                return false;
-            }
+            if (e.key === 'u' || e.key === 'U' || e.keyCode === 85) { e.preventDefault(); return false; }
+            if (e.key === 'c' || e.key === 'C' || e.keyCode === 67) { e.preventDefault(); return false; }
+            if (e.key === 's' || e.key === 'S' || e.keyCode === 83) { e.preventDefault(); return false; }
+            if (e.key === 'p' || e.key === 'P' || e.keyCode === 80) { e.preventDefault(); return false; }
+            if (e.key === 'a' || e.key === 'A' || e.keyCode === 65) { e.preventDefault(); return false; }
+            if (e.shiftKey && (e.key === 'i' || e.key === 'I' || e.keyCode === 73 || e.key === 'j' || e.key === 'J' || e.keyCode === 74)) { e.preventDefault(); return false; }
+            if (e.shiftKey && (e.key === 'c' || e.key === 'C' || e.keyCode === 67)) { e.preventDefault(); return false; }
         }
     });
   </script>
