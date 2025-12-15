@@ -6,7 +6,7 @@
   
   <title>Medan Kabar - Official Links Bio</title>
   <meta name="description" content="Menggali Fakta, Bukan Hanya Headline, Tapi Heartline. Portal berita terpercaya.">
-  <meta name="theme-color" content="#1abc9c">
+  <meta name="theme-color" content="#041C44">
   
   <link rel="shortcut icon" href="MedanKabar.jpg" type="image/x-icon">
 
@@ -43,20 +43,26 @@
       pointer-events: auto; 
     }
 
-    /* Variabel CSS untuk tema terang dan gelap */
+    /* PENGATURAN WARNA (BRANDING MEDAN KABAR) 
+       Default (:root) sekarang adalah Biru Navy sesuai logo.
+    */
     :root {
-      --bg: #f4f7fc;
-      --text: #2c3e50;
-      --card: #ffffff;
-      --accent: #1abc9c;
-      --shadow: rgba(0, 0, 0, 0.1);
+      --bg: #041C44;       /* Background Biru Navy Gelap */
+      --text: #ffffff;     /* Teks Putih */
+      --card: #062659;     /* Warna Kartu/Tombol sedikit lebih terang dari BG */
+      --accent: #E60012;   /* Warna Merah (seperti .com di logo) */
+      --shadow: rgba(0, 0, 0, 0.4);
+      --border-btn: #ffffff; /* Garis pinggir tombol utama */
     }
-    .dark {
-      --bg: #1e1e1e;
-      --text: #ecf0f1;
-      --card: #2c2c2c;
-      --accent: #16a085;
-      --shadow: rgba(0, 0, 0, 0.5);
+
+    /* Kelas untuk Mode Terang (Light Mode) - Kebalikan dari default */
+    .light-mode {
+      --bg: #f4f7fc;
+      --text: #041C44;     /* Teks jadi Biru Navy */
+      --card: #ffffff;
+      --accent: #E60012;
+      --shadow: rgba(0, 0, 0, 0.1);
+      --border-btn: #041C44;
     }
 
     /* Gaya dasar body */
@@ -74,8 +80,8 @@
       cursor: default; 
     }
 
-    /* Gaya tombol toggle dark mode */
-    .toggle-darkmode {
+    /* Gaya tombol toggle mode (Sekarang Light Mode) */
+    .toggle-mode {
       position: fixed;
       top: 20px;
       right: 20px;
@@ -95,12 +101,12 @@
       opacity: 0;
     }
 
-    .toggle-darkmode.show {
+    .toggle-mode.show {
       display: flex;
       animation: fadeIn 1s ease forwards;
     }
 
-    .toggle-darkmode:hover {
+    .toggle-mode:hover {
       background: var(--accent);
       color: #fff;
     }
@@ -116,7 +122,7 @@
       left: 50%;
       width: 60px;
       height: 60px;
-      border: 6px solid #f3f3f3;
+      border: 6px solid rgba(255,255,255,0.2);
       border-top: 6px solid var(--accent);
       border-radius: 50%;
       animation: spin 1s linear infinite;
@@ -160,12 +166,13 @@
 
     /* Gaya logo */
     .logo {
-      width: 70px;
-      height: 70px;
+      width: 80px; /* Diperbesar sedikit agar lebih jelas */
+      height: 80px;
       border-radius: 50%;
       overflow: hidden;
       box-shadow: 0 4px 12px var(--shadow);
       margin: 0 auto 1.2rem;
+      border: 2px solid var(--text); /* Tambahan border agar logo 'pop' */
       opacity: 0;
     }
 
@@ -183,13 +190,20 @@
       font-size: 1.8rem;
       margin: 0.5rem 0;
       font-weight: 600;
-      color: var(--accent);
+      color: var(--text);
       transition: all 0.5s ease;
+    }
+    
+    /* Span khusus untuk warna merah pada .com jika diinginkan */
+    .accent-text {
+        color: var(--accent);
     }
 
     p {
       font-size: 1rem;
       margin-bottom: 1.5rem;
+      color: var(--text);
+      opacity: 0.8;
     }
 
     .social-icons {
@@ -203,7 +217,7 @@
     }
 
     .social-icons a {
-      background: var(--card);
+      background: #ffffff; /* Ikon selalu putih backgroundnya agar jelas */
       padding: 0.4rem;
       border-radius: 50%;
       box-shadow: 0 2px 6px var(--shadow);
@@ -218,19 +232,25 @@
     .social-icons a:hover {
       transform: scale(1.1);
       box-shadow: 0 4px 16px var(--accent);
+      background: var(--accent); /* Berubah merah saat hover */
+    }
+    
+    .social-icons a:hover img {
+        filter: brightness(0) invert(1); /* Icon jadi putih saat hover */
     }
 
     .social-icons img {
       width: 16px;
       height: 16px;
+      transition: filter 0.3s;
     }
 
     .main-link {
-      background: var(--card);
+      background: transparent;
       color: var(--text);
       text-decoration: none;
       padding: clamp(0.8rem, 2vw + 0.5rem, 0.9rem) clamp(1.5rem, 4vw + 1rem, 1.8rem);
-      border: 2px solid var(--text);
+      border: 2px solid var(--accent); /* Border Merah */
       border-radius: 14px;
       font-weight: bold;
       font-size: clamp(1.5rem, 5vw + 0.5rem, 2.0rem);
@@ -244,6 +264,7 @@
       background: var(--accent);
       color: white;
       border-color: var(--accent);
+      box-shadow: 0 0 15px rgba(230, 0, 18, 0.6);
     }
 
     footer {
@@ -261,6 +282,7 @@
         text-overflow: ellipsis;
         display: block;
         margin-bottom: 0.2rem;
+        opacity: 0.7;
     }
 
     .footer-link {
@@ -297,13 +319,18 @@
 </head>
 <body oncontextmenu="return false;">
   <div class="loader" id="loader"></div>
-  <button class="toggle-darkmode" id="modeToggle" onclick="toggleDarkMode()">
-    <span class="icon">🌙</span> Night Mode
+  
+  <button class="toggle-mode" id="modeToggle" onclick="toggleMode()">
+    <span class="icon">☀️</span> Light Mode
   </button>
+  
   <div class="container" id="mainContent">
     <div class="logo" id="logo"><img src="MedanKabar.jpg" alt="MedanKabar" /></div>
-    <h1 id="title">Medan Kabar</h1>
+    
+    <h1 id="title">Medan Kabar<span class="accent-text"></span></h1>
+    
     <p id="desc">Menggali Fakta, Bukan Hanya Headline, Tapi Heartline.</p>
+    
     <nav class="social-icons" id="socials" aria-label="Sosial Media">
       <a href="https://www.instagram.com/medankabar?igsh=MTFlc2UyM2p0ZGF3dw==" target="_blank" aria-label="Kunjungi Instagram Medan Kabar"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png" alt="Instagram"></a>
       <a href="mailto:medankabaroffice@gmail.com" aria-label="Kirim Email ke Medan Kabar"><img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="Email"></a>
@@ -322,30 +349,33 @@
     const toggleBtn = document.getElementById('modeToggle');
     let isManualOverride = false;
 
-    function applyDarkMode(isDark) {
-      document.documentElement.classList.toggle('dark', isDark);
-      toggleBtn.innerHTML = isDark
-        ? '<span class="icon">☀️</span> Bright Mode'
-        : '<span class="icon">🌙</span> Night Mode';
+    // Fungsi Logika Mode (Sekarang membalik logika karena defaultnya adalah Dark Blue)
+    function applyMode(isLight) {
+      document.documentElement.classList.toggle('light-mode', isLight);
+      
+      if (isLight) {
+          toggleBtn.innerHTML = '<span class="icon">🌙</span> Dark Mode';
+          // Ubah meta theme color untuk light mode
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f4f7fc');
+      } else {
+          toggleBtn.innerHTML = '<span class="icon">☀️</span> Light Mode';
+          // Kembalikan meta theme color ke Biru Medan Kabar
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#041C44');
+      }
     }
 
-    function toggleDarkMode() {
-      const currentlyDark = document.documentElement.classList.contains('dark');
-      applyDarkMode(!currentlyDark);
+    function toggleMode() {
+      const currentlyLight = document.documentElement.classList.contains('light-mode');
+      applyMode(!currentlyLight);
       isManualOverride = true;
     }
 
-    function getAutomaticDarkModeStatus() {
+    function getAutomaticModeStatus() {
+        // Cek preferensi sistem, tapi prioritaskan tampilan branding (Dark Blue)
         const prefersSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const currentHour = new Date().getHours();
-        const isCurrentlyNightTime = currentHour >= 18 || currentHour < 6;
-
-        if (prefersSystemDark) {
-            return true;
-        } else if (isCurrentlyNightTime) {
-            return true;
-        }
-        return false;
+        // Jika sistem dark, biarkan default (false untuk light-mode). Jika sistem light, aktifkan light-mode.
+        // TAPI karena requestnya branding, kita bisa set default false (tetap biru) kecuali user ubah.
+        return false; 
     }
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -364,8 +394,9 @@
         content.style.display = 'block';
         toggleBtn.classList.add('show');
 
+        // Pastikan defaultnya branding (Biru)
         if (!isManualOverride) {
-            applyDarkMode(getAutomaticDarkModeStatus());
+            // applyMode(false); // Default is Dark/Brand Color
         }
 
         document.getElementById('logo').classList.add('fadeInUp');
@@ -376,14 +407,9 @@
         setTimeout(() => document.getElementById('footer').classList.add('fadeIn'), 1000);
       }, 1500);
 
-      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-          if (!isManualOverride) {
-              applyDarkMode(getAutomaticDarkModeStatus());
-          }
-      });
     });
 
-    // --- FITUR KEAMANAN TAMBAHAN (PERLINDUNGAN PENUH) ---
+    // --- FITUR KEAMANAN TAMBAHAN (PERLINDUNGAN PENUH - TIDAK DIKURANGI) ---
     // Mencegah Klik Kanan (Context Menu)
     document.addEventListener('contextmenu', event => event.preventDefault());
     // Mencegah Seleksi/Blok Teks
