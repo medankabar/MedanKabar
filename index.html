@@ -8,7 +8,7 @@
   <meta name="description" content="Menggali Fakta, Bukan Hanya Headline, Tapi Heartline. Portal berita terpercaya.">
   <meta name="theme-color" content="#041C44">
   
-  <link rel="shortcut icon" href="MedanKabar.jpg" type="image/x-icon">
+  <link rel="shortcut icon" href="https://www.medankabar.com/MedanKabar.jpg" type="image/x-icon">
 
   <meta property="og:title" content="Medan Kabar - Official Links">
   <meta property="og:description" content="Menggali Fakta, Bukan Hanya Headline, Tapi Heartline.">
@@ -16,57 +16,24 @@
   <meta property="og:url" content="https://www.medankabar.com">
   <meta property="og:type" content="website">
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet" />
+  
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
   <style>
-    /* --- CSS TAMBAHAN AGAR SEPERTI APLIKASI (Hapus Highlight Biru saat Klik) --- */
+    /* --- PENGATURAN DASAR --- */
     * {
         -webkit-tap-highlight-color: transparent;
+        box-sizing: border-box;
     }
 
-    /* --- ANTI COPY PASTE CSS (LAYER 1) --- */
     body {
-      -webkit-user-select: none; /* Safari */
-      -moz-user-select: none;    /* Firefox */
-      -ms-user-select: none;     /* IE10+/Edge */
-      user-select: none;         /* Standard */
-    }
-    
-    /* Mencegah gambar didrag/diseret */
-    img {
-      -webkit-user-drag: none;
-      user-drag: none;
-      pointer-events: none; 
-    }
-    
-    /* Kembalikan pointer events untuk link agar tetap bisa diklik */
-    a img {
-      pointer-events: auto; 
-    }
-
-    /* PENGATURAN WARNA (BRANDING MEDAN KABAR) 
-       Default (:root) sekarang adalah Biru Navy sesuai logo.
-    */
-    :root {
-      --bg: #041C44;       /* Background Biru Navy Gelap */
-      --text: #ffffff;     /* Teks Putih */
-      --card: #062659;     /* Warna Kartu/Tombol sedikit lebih terang dari BG */
-      --accent: #E60012;   /* Warna Merah (seperti .com di logo) */
-      --shadow: rgba(0, 0, 0, 0.4);
-      --border-btn: #ffffff; /* Garis pinggir tombol utama */
-    }
-
-    /* Kelas untuk Mode Terang (Light Mode) - Kebalikan dari default */
-    .light-mode {
-      --bg: #f4f7fc;
-      --text: #041C44;     /* Teks jadi Biru Navy */
-      --card: #ffffff;
-      --accent: #E60012;
-      --shadow: rgba(0, 0, 0, 0.1);
-      --border-btn: #041C44;
-    }
-
-    /* Gaya dasar body */
-    body {
+      -webkit-user-select: none;
+      -moz-user-select: none;   
+      -ms-user-select: none;     
+      user-select: none;         
       margin: 0;
       font-family: 'Poppins', sans-serif;
       background-color: var(--bg);
@@ -78,242 +45,393 @@
       overflow-x: hidden;
       transition: background-color 0.6s ease, color 0.6s ease;
       cursor: default; 
+      background-image: radial-gradient(circle at 50% 0%, var(--bg-glow), var(--bg) 70%);
+    }
+    
+    img { -webkit-user-drag: none; user-drag: none; pointer-events: none; }
+    a img { pointer-events: auto; }
+
+    /* --- PENGATURAN WARNA --- */
+    :root {
+      --bg: #041C44;       
+      --bg-glow: #062a66; 
+      --text: #ffffff;     
+      --text-muted: rgba(255, 255, 255, 0.8);
+      --accent: #E60012;   
+      
+      --btn-surface: linear-gradient(145deg, #041e49, #03193d);
+      --shadow-dark: rgba(1, 9, 24, 0.9);
+      --shadow-light: rgba(10, 42, 99, 0.8);
+      --border-edge: rgba(255, 255, 255, 0.08);
+      --modal-bg: rgba(4, 28, 68, 0.95);
+      --cookie-bg: rgba(4, 28, 68, 0.85);
     }
 
-    /* Gaya tombol toggle mode (Sekarang Light Mode) */
+    .light-mode {
+      --bg: #ebf0f7;
+      --bg-glow: #ffffff;
+      --text: #041C44;     
+      --text-muted: rgba(4, 28, 68, 0.8);
+      --accent: #E60012;
+      
+      --btn-surface: linear-gradient(145deg, #fbfdff, #d4dbe4);
+      --shadow-dark: rgba(184, 196, 211, 0.8);
+      --shadow-light: rgba(255, 255, 255, 1);
+      --border-edge: rgba(255, 255, 255, 0.6);
+      --modal-bg: rgba(255, 255, 255, 0.95);
+      --cookie-bg: rgba(255, 255, 255, 0.85);
+    }
+
+    /* --- TOMBOL MODE & LOADER --- */
     .toggle-mode {
       position: fixed;
       top: 20px;
       right: 20px;
-      background: var(--card);
+      background: var(--btn-surface);
       color: var(--text);
-      border: 1px solid var(--accent);
+      border: 1px solid var(--border-edge);
       border-radius: 30px;
-      padding: 6px 14px;
+      padding: 8px 16px;
       font-size: 0.9rem;
+      font-weight: 600;
       display: none;
       align-items: center;
       gap: 6px;
-      box-shadow: 0 2px 8px var(--shadow);
+      box-shadow: 5px 5px 12px var(--shadow-dark), -5px -5px 12px var(--shadow-light);
       cursor: pointer;
       z-index: 1000;
-      transition: background 0.4s ease, color 0.4s ease;
+      transition: all 0.3s ease;
       opacity: 0;
     }
 
-    .toggle-mode.show {
-      display: flex;
-      animation: fadeIn 1s ease forwards;
-    }
+    .toggle-mode.show { display: flex; animation: fadeIn 1s ease forwards; }
+    .toggle-mode:active { box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light); }
 
-    .toggle-mode:hover {
-      background: var(--accent);
-      color: #fff;
-    }
-
-    .icon {
-      font-size: 1rem;
-    }
-
-    /* Gaya Loader */
     .loader {
       position: fixed;
       top: 50%;
       left: 50%;
-      width: 60px;
-      height: 60px;
-      border: 6px solid rgba(255,255,255,0.2);
-      border-top: 6px solid var(--accent);
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255,255,255,0.05);
+      border-top: 5px solid var(--accent);
       border-radius: 50%;
       animation: spin 1s linear infinite;
       transform: translate(-50%, -50%);
       z-index: 10000;
+      box-shadow: 0 0 20px rgba(230,0,18,0.4);
     }
+    @keyframes spin { 100% { transform: translate(-50%, -50%) rotate(360deg); } }
 
-    @keyframes spin {
-      0% { transform: translate(-50%, -50%) rotate(0deg); }
-      100% { transform: translate(-50%, -50%) rotate(360deg); }
-    }
-
-    /* Gaya kontainer utama */
+    /* --- KONTEN UTAMA --- */
     .container {
-      margin-top: 90px;
-      padding: 1rem;
+      margin-top: 40px; 
+      padding: 2rem 1.5rem;
       width: 100%;
       max-width: 480px;
-      box-sizing: border-box;
       text-align: center;
       display: none;
     }
 
-    .fadeInUp {
-      animation: fadeInUp 1s ease forwards;
-    }
-
-    .fadeIn {
-      animation: fadeIn 1.2s ease forwards;
-    }
+    .fadeInUp { animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+    .fadeIn { animation: fadeIn 1.2s ease forwards; }
 
     @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(40px); }
+      from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+      100% { transform: translateY(0px); }
     }
 
-    /* Gaya logo */
+    .logo-wrapper { opacity: 0; margin-bottom: 1.5rem; }
+
     .logo {
-      width: 80px; /* Diperbesar sedikit agar lebih jelas */
-      height: 80px;
+      width: 120px; 
+      height: 120px;
       border-radius: 50%;
       overflow: hidden;
-      box-shadow: 0 4px 12px var(--shadow);
-      margin: 0 auto 1.2rem;
-      border: 2px solid var(--text); /* Tambahan border agar logo 'pop' */
-      opacity: 0;
-    }
-
-    .logo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    h1, p, .main-link, .social-icons, footer {
-      opacity: 0;
-    }
-
-    h1 {
-      font-size: 1.8rem;
-      margin: 0.5rem 0;
-      font-weight: 600;
-      color: var(--text);
-      transition: all 0.5s ease;
+      box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light), inset 0 0 0 4px var(--bg);
+      margin: 0 auto;
+      border: 1px solid var(--border-edge);
+      background: var(--btn-surface);
+      display: flex; 
+      align-items: center;
+      justify-content: center;
     }
     
-    /* Span khusus untuk warna merah pada .com jika diinginkan */
-    .accent-text {
-        color: var(--accent);
-    }
+    .logo img { width: 100%; height: 100%; object-fit: cover; }
 
-    p {
-      font-size: 1rem;
-      margin-bottom: 1.5rem;
+    #title, #desc, .main-link, .social-icons, footer { opacity: 0; }
+
+    h1 {
+      font-size: 2.2rem;
+      margin: 0;
+      font-weight: 800;
+      letter-spacing: -1px;
       color: var(--text);
-      opacity: 0.8;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    .light-mode h1 { text-shadow: none; }
+    .accent-text { color: var(--accent); }
+
+    #desc {
+      font-size: 0.9rem;
+      margin-top: 5px;
+      margin-bottom: 2rem; 
+      color: var(--text-muted); 
+      font-style: italic;
+      font-weight: 400;
     }
 
+    /* --- IKON SOSIAL MEDIA 3D --- */
     .social-icons {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       align-items: center;
-      gap: 0.6rem;
-      margin-bottom: 2rem;
-      flex-shrink: 0;
+      gap: 0.9rem; 
+      margin-bottom: 2.5rem; 
     }
 
     .social-icons a {
-      background: #ffffff; /* Ikon selalu putih backgroundnya agar jelas */
-      padding: 0.4rem;
+      background: var(--btn-surface);
       border-radius: 50%;
-      box-shadow: 0 2px 6px var(--shadow);
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      box-shadow: 6px 6px 14px var(--shadow-dark), -6px -6px 14px var(--shadow-light);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 26px;
-      height: 26px;
+      width: 48px;  
+      height: 48px; 
+      border: 1px solid var(--border-edge);
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
     }
 
-    .social-icons a:hover {
-      transform: scale(1.1);
-      box-shadow: 0 4px 16px var(--accent);
-      background: var(--accent); /* Berubah merah saat hover */
-    }
-    
-    .social-icons a:hover img {
-        filter: brightness(0) invert(1); /* Icon jadi putih saat hover */
-    }
+    .social-icons i { font-size: 1.3rem; color: var(--text); transition: all 0.3s ease; z-index: 2; }
 
-    .social-icons img {
-      width: 16px;
-      height: 16px;
-      transition: filter 0.3s;
-    }
+    .social-icons a:hover { transform: translateY(-5px) scale(1.05); }
+    .social-icons a:hover i { color: #ffffff; transform: scale(1.15); }
+    .social-icons a:active { transform: translateY(2px); box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light); }
 
+    .social-icons a.ig:hover { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); box-shadow: 0 10px 20px rgba(220, 39, 67, 0.5); border-color: transparent;}
+    .social-icons a.email:hover { background: #EA4335; box-shadow: 0 10px 20px rgba(234, 67, 53, 0.5); border-color: transparent;}
+    .social-icons a.fb:hover { background: #1877F2; box-shadow: 0 10px 20px rgba(24, 119, 242, 0.5); border-color: transparent;}
+    .social-icons a.yt:hover { background: #FF0000; box-shadow: 0 10px 20px rgba(255, 0, 0, 0.5); border-color: transparent;}
+    .social-icons a.threads:hover { background: #000000; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4); border-color: transparent;}
+    .social-icons a.tiktok:hover { background: #000000; box-shadow: 0 10px 20px rgba(0, 242, 254, 0.4); border-color: #00f2fe;}
+    .social-icons a.wa:hover { background: #25D366; box-shadow: 0 10px 20px rgba(37, 211, 102, 0.5); border-color: transparent;}
+    .light-mode .social-icons a:hover i { color: #ffffff; }
+
+    /* --- TOMBOL UTAMA --- */
     .main-link {
-      background: transparent;
+      background: var(--btn-surface);
       color: var(--text);
       text-decoration: none;
-      padding: clamp(0.8rem, 2vw + 0.5rem, 0.9rem) clamp(1.5rem, 4vw + 1rem, 1.8rem);
-      border: 2px solid var(--accent); /* Border Merah */
-      border-radius: 14px;
-      font-weight: bold;
-      font-size: clamp(1.5rem, 5vw + 0.5rem, 2.0rem);
-      box-shadow: 0 4px 12px var(--shadow);
-      transition: all 0.4s ease;
-      margin: 0 auto 2rem;
+      padding: 1.2rem 2rem;
+      border-radius: 16px;
+      font-weight: 800;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+      box-shadow: 8px 8px 20px var(--shadow-dark), -8px -8px 20px var(--shadow-light), inset 1px 1px 2px rgba(255,255,255,0.2);
+      border: 1px solid var(--border-edge);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      margin: 0 auto 1.5rem;
       display: inline-block;
+      width: 100%;
+      position: relative;
     }
 
     .main-link:hover {
       background: var(--accent);
       color: white;
       border-color: var(--accent);
-      box-shadow: 0 0 15px rgba(230, 0, 18, 0.6);
+      box-shadow: 0 12px 25px rgba(230, 0, 18, 0.5), inset 2px 2px 5px rgba(255,255,255,0.3);
+      transform: translateY(-4px);
+    }
+    .main-link:active { 
+      transform: translateY(2px); 
+      box-shadow: inset 6px 6px 12px rgba(0,0,0,0.5), inset -6px -6px 12px rgba(255,255,255,0.1); 
     }
 
+    /* --- FOOTER & KEBIJAKAN PRIVASI --- */
     footer {
-      font-size: 0.875rem;
+      font-size: 0.8rem;
       text-align: center;
       color: var(--text);
-      margin-top: 1.5rem;
-      line-height: 1.5;
+      margin-top: 1rem;
+      line-height: 1.8;
       opacity: 0;
     }
-
-    .footer-line {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: block;
-        margin-bottom: 0.2rem;
-        opacity: 0.7;
+    
+    .privacy-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 10px;
     }
 
-    .footer-link {
-        color: var(--accent);
-        text-decoration: none;
-        font-weight: 600;
-        transition: color 0.3s ease;
+    .privacy-links a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.85rem;
+      opacity: 0.8;
+      transition: all 0.3s ease;
+      position: relative;
+      cursor: pointer;
+    }
+    
+    .privacy-links a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -2px;
+      left: 50%;
+      background-color: var(--accent);
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
     }
 
-    .footer-link:hover {
-        color: var(--text);
-        text-decoration: underline;
+    .privacy-links a:hover { opacity: 1; color: var(--accent); }
+    .privacy-links a:hover::after { width: 100%; }
+
+    .footer-line { display: block; opacity: 0.5; font-size: 0.75rem; }
+
+    /* --- POPUP MODAL KEBIJAKAN PRIVASI --- */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.active { display: flex; opacity: 1; }
+
+    .modal-content {
+      background: var(--modal-bg);
+      color: var(--text);
+      width: 90%;
+      max-width: 500px;
+      max-height: 80vh;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+      border: 1px solid var(--border-edge);
+      position: relative;
+      transform: translateY(20px);
+      transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+      overflow-y: auto;
+      text-align: left;
+    }
+
+    .modal-overlay.active .modal-content { transform: translateY(0); }
+
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 1.5rem;
+      color: var(--text);
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.3s ease, color 0.3s ease;
+    }
+    .close-modal:hover { opacity: 1; color: var(--accent); }
+    .modal-content h2 { margin-top: 0; color: var(--accent); font-size: 1.5rem; margin-bottom: 1rem; border-bottom: 2px solid var(--border-edge); padding-bottom: 10px; }
+    .modal-content p { font-size: 0.85rem; line-height: 1.6; color: var(--text-muted); margin-bottom: 1rem; font-style: normal; opacity: 1; }
+    .modal-content::-webkit-scrollbar { width: 6px; }
+    .modal-content::-webkit-scrollbar-track { background: transparent; }
+    .modal-content::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+
+    /* --- COOKIE CONSENT BANNER --- */
+    .cookie-banner {
+      position: fixed;
+      bottom: -200px; 
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 450px;
+      background: var(--cookie-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+      padding: 20px 25px;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      z-index: 9998;
+      transition: bottom 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    }
+
+    .cookie-banner.show { bottom: 25px; }
+
+    .cookie-icon {
+      font-size: 2.5rem;
+      margin-bottom: -10px;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+    }
+
+    .cookie-text {
+      font-size: 0.85rem;
+      color: var(--text);
+      text-align: center;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .cookie-text a { color: var(--accent); text-decoration: none; font-weight: 700; }
+    .cookie-text a:hover { text-decoration: underline; }
+
+    .cookie-btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 10px 30px;
+      border-radius: 25px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(230, 0, 18, 0.4);
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+
+    .cookie-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(230, 0, 18, 0.6);
     }
 
     @media (max-width: 768px) {
-      .container {
-        padding: 1rem 0.5rem;
-      }
-
-      .main-link {
-        font-size: 1.4rem;
-        padding: 0.8rem 1.4rem;
-      }
-
-      footer {
-        font-size: 0.75rem;
-      }
-
-      .social-icons {
-        gap: 0.4rem;
-      }
+      .container { padding: 1.5rem 1rem; }
+      .logo { width: 100px; height: 100px; }
+      .social-icons { gap: 0.6rem; } 
+      .social-icons a { width: 44px; height: 44px; } 
+      .social-icons i { font-size: 1.2rem; }
+      .main-link { font-size: 1.3rem; padding: 1rem 1.5rem; }
+      .privacy-links { gap: 10px; font-size: 0.8rem; }
+      .cookie-banner { width: 95%; padding: 15px 20px; }
     }
   </style>
 </head>
@@ -325,41 +443,98 @@
   </button>
   
   <div class="container" id="mainContent">
-    <div class="logo" id="logo"><img src="MedanKabar.jpg" alt="MedanKabar" /></div>
+    <div class="logo-wrapper" id="logoWrap">
+        <div class="logo"><img src="https://www.medankabar.com/MedanKabar.jpg" alt="MedanKabar" onerror="this.src='https://dummyimage.com/120x120/041C44/ffffff&text=MK'" /></div>
+    </div>
     
-    <h1 id="title">Medan Kabar<span class="accent-text"></span></h1>
-    
-    <p id="desc">Menggali Fakta, Bukan Hanya Headline, Tapi Heartline.</p>
+    <h1 id="title">medankabar<span class="accent-text">.com</span></h1>
+    <p id="desc">Menggali Fakta || Bukan Hanya Headline || Tapi Heartline.</p>
     
     <nav class="social-icons" id="socials" aria-label="Sosial Media">
-      <a href="https://www.instagram.com/medankabar?igsh=MTFlc2UyM2p0ZGF3dw==" target="_blank" aria-label="Kunjungi Instagram Medan Kabar"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png" alt="Instagram"></a>
-      <a href="mailto:medankabaroffice@gmail.com" aria-label="Kirim Email ke Medan Kabar"><img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="Email"></a>
-      <a href="https://www.facebook.com/medankabarcom" target="_blank" aria-label="Kunjungi Facebook Medan Kabar"><img src="https://cdn-icons-png.flaticon.com/512/145/145802.png" alt="Facebook"></a>
-      <a href="https://www.youtube.com/@medankabar" target="_blank" aria-label="Kunjungi YouTube Medan Kabar"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"></a>
-      <a href="https://www.threads.com/@medankabar" target="_blank" aria-label="Kunjungi Threads Medan Kabar"><img src="https://iili.io/3cZnPBS.png" alt="Threads"></a>
-      <a href="https://www.tiktok.com/@medankabar.com?utm_campaign=linkinbio&utm_medium=referral&utm_source=later-linkinbio" target="_blank" aria-label="Kunjungi TikTok Medan Kabar"><img src="https://iili.io/3cZIVat.png" alt="TikTok"></a>
-      <a href="https://api.whatsapp.com/send/?phone=%2B6285358249709&type=phone_number&app_absent=0" target="_blank" aria-label="Kirim Pesan WhatsApp ke Medan Kabar"><img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp"></a>
+      <a href="https://www.instagram.com/medankabar?igsh=MTFlc2UyM2p0ZGF3dw==" class="ig" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+      <a href="mailto:medankabaroffice@gmail.com" class="email" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+      <a href="https://www.facebook.com/medankabarcom" class="fb" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+      <a href="https://www.youtube.com/@medankabar" class="yt" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+      <a href="https://www.threads.com/@medankabar" class="threads" target="_blank" aria-label="Threads"><i class="fa-brands fa-threads"></i></a>
+      <a href="https://www.tiktok.com/@medankabar.com?utm_campaign=linkinbio&utm_medium=referral&utm_source=later-linkinbio" class="tiktok" target="_blank" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+      <a href="https://api.whatsapp.com/send/?phone=%2B6285358249709&type=phone_number&app_absent=0" class="wa" target="_blank" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
     </nav>
 
     <a class="main-link" id="mainLink" href="https://www.medankabar.com" target="_blank">MEDANKABAR.COM</a>
-    <footer id="footer"></footer>
+    
+    <footer id="footer">
+      <div class="privacy-links">
+        <a href="https://www.medankabar.com/p/redaksi_28.html" target="_blank">Redaksi</a>
+        <a onclick="openModal()">Kebijakan Privasi</a>
+        <a href="https://www.medankabar.com/p/pedoman-media-siber.html" target="_blank">Pedoman Media Siber</a>
+      </div>
+      <span class="footer-line">© Mediaga Group <span id="year"></span> - All rights reserved.</span>
+    </footer>
 
   </div>
+
+  <div class="modal-overlay" id="privacyModal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal()"><i class="fas fa-times"></i></span>
+      <h2>Kebijakan Privasi</h2>
+      <p>Jika Anda memerlukan informasi lebih lanjut atau memiliki pertanyaan tentang kebijakan privasi kami, jangan ragu untuk menghubungi kami melalui email di <strong>medankabaroffice@gmail.com</strong>.</p>
+      <p>Di <strong>Medan Kabar (medankabar.com)</strong>, privasi pengunjung kami adalah hal yang sangat penting. Dokumen kebijakan privasi ini menguraikan jenis informasi pribadi yang diterima dan dikumpulkan oleh Medan Kabar dan bagaimana informasi tersebut digunakan.</p>
+      <p><strong>File Log</strong><br>Seperti kebanyakan situs web lain, Medan Kabar menggunakan file log. Informasi di dalam file log meliputi alamat protokol internet (IP), jenis browser, Internet Service Provider (ISP), stempel tanggal/waktu, halaman rujukan/keluar, dan jumlah klik untuk menganalisis tren, mengelola situs, melacak pergerakan pengguna di sekitar situs, dan mengumpulkan informasi demografis. Alamat IP, dan informasi lain semacam itu tidak terkait dengan informasi apa pun yang dapat diidentifikasi secara pribadi.</p>
+      <p><strong>Cookies dan Web Beacons</strong><br>Medan Kabar menggunakan cookies untuk menyimpan informasi tentang preferensi pengunjung, merekam informasi spesifik pengguna di halaman mana pengguna mengakses atau mengunjungi, menyesuaikan konten halaman web berdasarkan jenis browser pengunjung atau informasi lain yang dikirimkan pengunjung melalui browser mereka.</p>
+      <p>Mitra periklanan kami (seperti Google AdSense) mungkin menggunakan cookies dan web beacon di situs kami. Jaringan iklan pihak ketiga ini menggunakan teknologi pada iklan dan tautan yang muncul di Medan Kabar yang dikirim langsung ke browser Anda. Medan Kabar tidak memiliki akses atau kontrol atas cookies yang digunakan oleh pengiklan pihak ketiga.</p>
+    </div>
+  </div>
+
+  <div class="cookie-banner" id="cookieBanner">
+    <div class="cookie-icon">🍪</div>
+    <p class="cookie-text">
+      Kami menggunakan cookie dan teknologi pelacakan untuk memastikan Anda mendapatkan pengalaman terbaik. Membaca lebih lanjut di <a href="javascript:void(0)" onclick="openModal()">Kebijakan Privasi</a> kami.
+    </p>
+    <button class="cookie-btn" onclick="acceptCookies()">Saya Mengerti & Setuju</button>
+  </div>
+
   <script>
+    // --- MODE PRODUKSI: RULES ---
+    const isProduction = true; // Set ke 'false' jika Anda sedang mengedit ulang kode ini di komputer
+    if (isProduction) {
+        // Menonaktifkan console output agar log Firebase/sistem tidak bocor di browser pengunjung
+        console.log = function() {};
+        console.warn = function() {};
+        console.error = function() {};
+        console.info = function() {};
+    }
+
+    // --- KONFIGURASI FIREBASE FIRESTORE ---
+    const firebaseConfig = {
+      apiKey: "AIzaSyDhvDFvFyRd3yfqRNxyavJCnDOADzgAfJY",
+      authDomain: "cookie-e63fc.firebaseapp.com",
+      projectId: "cookie-e63fc",
+      storageBucket: "cookie-e63fc.firebasestorage.app",
+      messagingSenderId: "391983353066",
+      appId: "1:391983353066:web:11229994a555424ead1b93",
+      measurementId: "G-RCB4TR6ZLX"
+    };
+
+    let db;
+    if (firebaseConfig.apiKey !== "ISI_API_KEY_KAMU") {
+      if (!firebase.apps.length) {
+         firebase.initializeApp(firebaseConfig);
+      }
+      db = firebase.firestore();
+    }
+
+    // --- FITUR DARK/LIGHT MODE ---
     const toggleBtn = document.getElementById('modeToggle');
     let isManualOverride = false;
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Fungsi Logika Mode (Sekarang membalik logika karena defaultnya adalah Dark Blue)
     function applyMode(isLight) {
       document.documentElement.classList.toggle('light-mode', isLight);
-      
       if (isLight) {
           toggleBtn.innerHTML = '<span class="icon">🌙</span> Dark Mode';
-          // Ubah meta theme color untuk light mode
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f4f7fc');
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ebf0f7');
       } else {
           toggleBtn.innerHTML = '<span class="icon">☀️</span> Light Mode';
-          // Kembalikan meta theme color ke Biru Medan Kabar
           document.querySelector('meta[name="theme-color"]').setAttribute('content', '#041C44');
       }
     }
@@ -370,53 +545,83 @@
       isManualOverride = true;
     }
 
-    function getAutomaticModeStatus() {
-        // Cek preferensi sistem, tapi prioritaskan tampilan branding (Dark Blue)
-        const prefersSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        // Jika sistem dark, biarkan default (false untuk light-mode). Jika sistem light, aktifkan light-mode.
-        // TAPI karena requestnya branding, kita bisa set default false (tetap biru) kecuali user ubah.
-        return false; 
+    // --- FUNGSI MODAL ---
+    const modal = document.getElementById('privacyModal');
+    function openModal() { modal.classList.add('active'); }
+    function closeModal() { modal.classList.remove('active'); }
+    window.onclick = function(event) { if (event.target == modal) { closeModal(); } }
+
+    // --- FUNGSI COOKIE CONSENT ---
+    const cookieBanner = document.getElementById('cookieBanner');
+
+    function checkCookieConsent() {
+      const cookies = document.cookie.split(';');
+      const isConsented = cookies.some(item => item.trim().startsWith('medanKabarCookieConsent='));
+      
+      if (isConsented) {
+        if(cookieBanner) {
+            cookieBanner.style.display = 'none';
+            cookieBanner.remove();
+        }
+      } else {
+        setTimeout(() => { 
+            if(cookieBanner) cookieBanner.classList.add('show'); 
+        }, 2500);
+      }
     }
 
+    function acceptCookies() {
+      if(cookieBanner) {
+          cookieBanner.style.display = 'none';
+          cookieBanner.remove();
+      }
+
+      document.cookie = "medanKabarCookieConsent=accepted; max-age=" + (60 * 60 * 24 * 365) + "; path=/; SameSite=Lax";
+
+      if (db) {
+        db.collection("cookie_consents").add({
+            consentedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            userAgent: navigator.userAgent,
+            platform: navigator.platform || "Unknown",
+            language: navigator.language || "Unknown",
+            status: "accepted"
+        }).then(() => {
+            // Berhasil (dihilangkan dari console mode produksi)
+        }).catch((error) => {
+            // Gagal senyap (silent fail) tanpa merusak web
+        });
+      }
+    }
+
+    // --- INISIALISASI HALAMAN ---
     window.addEventListener('DOMContentLoaded', () => {
       const loader = document.getElementById('loader');
       const content = document.getElementById('mainContent');
-      const footer = document.getElementById('footer');
-      const currentYear = new Date().getFullYear();
-      
-      footer.innerHTML = `
-        <span class="footer-line">© Mediaga Group ${currentYear} - Semua hak cipta dilindungi.</span>
-        <span class="footer-line">Made by: <a href="https://appwebiatech.github.io/AppWebiatech/" target="_blank" class="footer-link">AppWebiatech</a></span>
-      `;
+      const logoWrap = document.getElementById('logoWrap');
+
+      checkCookieConsent();
 
       setTimeout(() => {
         loader.style.display = 'none';
         content.style.display = 'block';
         toggleBtn.classList.add('show');
 
-        // Pastikan defaultnya branding (Biru)
-        if (!isManualOverride) {
-            // applyMode(false); // Default is Dark/Brand Color
-        }
+        logoWrap.classList.add('fadeInUp');
+        setTimeout(() => document.getElementById('title').classList.add('fadeInUp'), 150);
+        setTimeout(() => document.getElementById('desc').classList.add('fadeInUp'), 300);
+        setTimeout(() => document.getElementById('socials').classList.add('fadeInUp'), 450);
+        setTimeout(() => document.getElementById('mainLink').classList.add('fadeInUp'), 600);
+        setTimeout(() => document.getElementById('footer').classList.add('fadeIn'), 800);
 
-        document.getElementById('logo').classList.add('fadeInUp');
-        setTimeout(() => document.getElementById('title').classList.add('fadeInUp'), 200);
-        setTimeout(() => document.getElementById('desc').classList.add('fadeInUp'), 400);
-        setTimeout(() => document.getElementById('socials').classList.add('fadeInUp'), 600);
-        setTimeout(() => document.getElementById('mainLink').classList.add('fadeInUp'), 800);
-        setTimeout(() => document.getElementById('footer').classList.add('fadeIn'), 1000);
+        setTimeout(() => { logoWrap.style.animation = 'float 4s ease-in-out infinite'; }, 1000); 
+
       }, 1500);
-
     });
 
-    // --- FITUR KEAMANAN TAMBAHAN (PERLINDUNGAN PENUH - TIDAK DIKURANGI) ---
-    // Mencegah Klik Kanan (Context Menu)
+    // --- SKRIP ANTI-COPY PASTE (DIPERKETAT UNTUK PRODUKSI) ---
     document.addEventListener('contextmenu', event => event.preventDefault());
-    // Mencegah Seleksi/Blok Teks
     document.addEventListener('selectstart', event => event.preventDefault());
-    // Mencegah Drag Gambar
     document.addEventListener('dragstart', event => event.preventDefault());
-    // Mencegah Shortcut Keyboard
     document.addEventListener('keydown', function(e) {
         if (e.key === 'F12' || e.keyCode === 123) { e.preventDefault(); return false; }
         if (e.ctrlKey) {
