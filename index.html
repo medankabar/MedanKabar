@@ -8,7 +8,7 @@
   <meta name="description" content="Menggali Fakta, Bukan Hanya Headline, Tapi Heartline. Portal berita terpercaya.">
   <meta name="theme-color" content="#041C44">
   
-  <link rel="shortcut icon" href="https://www.medankabar.com/MedanKabar.jpg" type="image/x-icon">
+  <link rel="shortcut icon" href="MedanKabar.jpg" type="image/x-icon">
 
   <meta property="og:title" content="Medan Kabar - Official Links">
   <meta property="og:description" content="Menggali Fakta, Bukan Hanya Headline, Tapi Heartline.">
@@ -613,7 +613,10 @@
         setTimeout(() => document.getElementById('mainLink').classList.add('fadeInUp'), 600);
         setTimeout(() => document.getElementById('footer').classList.add('fadeIn'), 800);
 
-        setTimeout(() => { logoWrap.style.animation = 'float 4s ease-in-out infinite'; }, 1000); 
+        setTimeout(() => { 
+          logoWrap.style.opacity = '1';
+          logoWrap.style.animation = 'float 4s ease-in-out infinite'; 
+        }, 1000);
 
       }, 1500);
     });
