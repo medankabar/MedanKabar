@@ -211,7 +211,34 @@
       border: 1px solid var(--border-edge);
       text-decoration: none;
       position: relative;
-      overflow: hidden;
+    }
+
+    .social-icons a::after {
+      content: attr(aria-label);
+      position: absolute;
+      top: -35px;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px) scale(0.8);
+      background: var(--cookie-bg);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      color: var(--text);
+      padding: 4px 10px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      border-radius: 8px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      z-index: 10;
+    }
+
+    .social-icons a:hover::after, .social-icons a:active::after {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0) scale(1);
     }
 
     .social-icons i { font-size: 1.3rem; color: var(--text); transition: all 0.3s ease; z-index: 2; }
@@ -448,7 +475,7 @@
     </div>
     
     <h1 id="title">medankabar<span class="accent-text"></span></h1>
-    <p id="desc">Menggali Fakta | Bukan Hanya Headline | Tapi Heartline.</p>
+    <p id="desc">Menggali Fakta || Bukan Hanya Headline || Tapi Heartline.</p>
     
     <nav class="social-icons" id="socials" aria-label="Sosial Media">
       <a href="https://www.instagram.com/medankabar?igsh=MTFlc2UyM2p0ZGF3dw==" class="ig" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
