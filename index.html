@@ -41,9 +41,9 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: 100vh; /* Fallback untuk browser lawas/Firefox iOS */
+      min-height: 100vh; 
       min-height: 100dvh;
-      padding-bottom: 40px; /* Jarak ekstra wajib di paling bawah body */
+      padding-bottom: 40px; 
       overflow-x: hidden;
       transition: background-color 0.6s ease, color 0.6s ease;
       cursor: default; 
@@ -127,8 +127,7 @@
 
     /* --- KONTEN UTAMA --- */
     .container {
-      margin-top: max(60px, env(safe-area-inset-top)); /* Hindari tumpang tindih dengan tombol Dark Mode */
-      /* Memaksa jarak bawah minimal 4rem (sekitar 64px) apa pun browsernya */
+      margin-top: max(60px, env(safe-area-inset-top)); 
       padding: 2rem 1.5rem max(4rem, env(safe-area-inset-bottom));
       width: 100%;
       max-width: 480px;
@@ -197,8 +196,8 @@
       flex-wrap: wrap;
       justify-content: center;
       align-items: center;
-      gap: 0.9rem; 
-      margin-bottom: 2.5rem; 
+      gap: 0.7rem; /* Diperkecil */
+      margin-bottom: 2rem; /* Diperkecil */
     }
 
     .social-icons a {
@@ -209,8 +208,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 48px;  
-      height: 48px; 
+      width: 42px;  /* Diperkecil dari 48px */
+      height: 42px; /* Diperkecil dari 48px */
       border: 1px solid var(--border-edge);
       text-decoration: none;
       position: relative;
@@ -244,7 +243,7 @@
       transform: translateX(-50%) translateY(0) scale(1);
     }
 
-    .social-icons i { font-size: 1.3rem; color: var(--text); transition: all 0.3s ease; z-index: 2; }
+    .social-icons i { font-size: 1.1rem; /* Diperkecil dari 1.3rem */ color: var(--text); transition: all 0.3s ease; z-index: 2; }
 
     .social-icons a:hover { transform: translateY(-5px) scale(1.05); }
     .social-icons a:hover i { color: #ffffff; transform: scale(1.15); }
@@ -414,7 +413,6 @@
       transition: bottom 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
     }
 
-    /* Penyesuaian jarak bawah untuk browser Instagram/TikTok */
     .cookie-banner.show { 
       bottom: calc(25px + env(safe-area-inset-bottom, 0px)); 
     }
@@ -458,13 +456,15 @@
 
     @media (max-width: 768px) {
       .container { 
-        /* Di mobile, jarak juga diperbesar agar selalu aman dari navbar dinamis */
         padding: 1.5rem 1rem max(3rem, env(safe-area-inset-bottom)); 
       }
       .logo { width: 100px; height: 100px; }
-      .social-icons { gap: 0.6rem; } 
-      .social-icons a { width: 44px; height: 44px; } 
-      .social-icons i { font-size: 1.2rem; }
+      
+      /* --- UKURAN IKON KHUSUS MOBILE LEBIH KECIL LAGI --- */
+      .social-icons { gap: 0.5rem; margin-bottom: 1.5rem; } 
+      .social-icons a { width: 38px; height: 38px; } 
+      .social-icons i { font-size: 1rem; }
+      
       .main-link { font-size: 1.3rem; padding: 1rem 1.5rem; }
       .privacy-links { gap: 10px; font-size: 0.8rem; }
       .cookie-banner { width: 95%; padding: 15px 20px; }
@@ -556,7 +556,6 @@
       db = firebase.firestore();
     }
 
-    // --- FITUR DARK/LIGHT MODE ---
     const toggleBtn = document.getElementById('modeToggle');
     let isManualOverride = false;
     document.getElementById('year').textContent = new Date().getFullYear();
@@ -578,7 +577,6 @@
       isManualOverride = true; 
     }
 
-    // --- FUNGSI OTOMATIS MODE BERDASARKAN JAM ---
     function checkAutoMode() {
       if (isManualOverride) return; 
       
@@ -596,15 +594,13 @@
     const cookieBanner = document.getElementById('cookieBanner');
 
     function checkCookieConsent() {
-      // Cek apakah cookie browser tersedia
       const cookies = document.cookie.split(';');
       const isCookieConsented = cookies.some(item => item.trim().startsWith('medanKabarCookieConsent='));
       
-      // Cek apakah data tersimpan di LocalStorage (Cadangan untuk IG In-App Browser)
       let isLocalConsented = false;
       try {
           isLocalConsented = localStorage.getItem('medanKabarCookieConsent') === 'accepted';
-      } catch (e) { /* Abaikan jika localStorage diblokir */ }
+      } catch (e) { }
       
       if (isCookieConsented || isLocalConsented) {
         if(cookieBanner) {
@@ -624,10 +620,8 @@
           cookieBanner.remove();
       }
       
-      // 1. Simpan ke Cookie biasa
       document.cookie = "medanKabarCookieConsent=accepted; max-age=" + (60 * 60 * 24 * 365) + "; path=/; SameSite=Lax";
       
-      // 2. Simpan ke LocalStorage
       try {
           localStorage.setItem('medanKabarCookieConsent', 'accepted');
       } catch (e) {
@@ -647,7 +641,6 @@
       }
     }
 
-    // --- INISIALISASI HALAMAN ---
     window.addEventListener('DOMContentLoaded', () => {
       const loader = document.getElementById('loader');
       const content = document.getElementById('mainContent');
@@ -678,7 +671,6 @@
       }, 1500);
     });
 
-    // --- SKRIP ANTI-COPY PASTE ---
     document.addEventListener('contextmenu', event => event.preventDefault());
     document.addEventListener('selectstart', event => event.preventDefault());
     document.addEventListener('dragstart', event => event.preventDefault());
