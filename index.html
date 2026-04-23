@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   
   <title>Medan Kabar - Official Links Bio</title>
   <meta name="description" content="Menggali Fakta, Bukan Hanya Headline, Tapi Heartline. Portal berita terpercaya.">
@@ -41,7 +41,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: 100vh;
+      min-height: 100dvh; /* Menggunakan dvh agar lebih akurat dengan UI mobile browser */
       overflow-x: hidden;
       transition: background-color 0.6s ease, color 0.6s ease;
       cursor: default; 
@@ -53,7 +53,7 @@
 
     /* --- PENGATURAN WARNA --- */
     :root {
-      --bg: #041C44;       
+      --bg: #041C44;        
       --bg-glow: #062a66; 
       --text: #ffffff;     
       --text-muted: rgba(255, 255, 255, 0.8);
@@ -85,7 +85,7 @@
     /* --- TOMBOL MODE & LOADER --- */
     .toggle-mode {
       position: fixed;
-      top: 20px;
+      top: max(20px, env(safe-area-inset-top)); /* Safe area top untuk iPhone notch */
       right: 20px;
       background: var(--btn-surface);
       color: var(--text);
@@ -126,7 +126,8 @@
     /* --- KONTEN UTAMA --- */
     .container {
       margin-top: 40px; 
-      padding: 2rem 1.5rem;
+      /* Menambahkan env(safe-area-inset-bottom) agar tidak tertutup indikator home iPhone */
+      padding: 2rem 1.5rem calc(2rem + env(safe-area-inset-bottom));
       width: 100%;
       max-width: 480px;
       text-align: center;
@@ -411,7 +412,7 @@
       transition: bottom 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
     }
 
-    .cookie-banner.show { bottom: 25px; }
+    .cookie-banner.show { bottom: max(25px, env(safe-area-inset-bottom)); }
 
     .cookie-icon {
       font-size: 2.5rem;
@@ -451,7 +452,10 @@
     }
 
     @media (max-width: 768px) {
-      .container { padding: 1.5rem 1rem; }
+      .container { 
+        /* Safe area diinject kembali khusus mobile view */
+        padding: 1.5rem 1rem calc(1.5rem + env(safe-area-inset-bottom)); 
+      }
       .logo { width: 100px; height: 100px; }
       .social-icons { gap: 0.6rem; } 
       .social-icons a { width: 44px; height: 44px; } 
@@ -483,7 +487,7 @@
       <a href="https://www.facebook.com/medankabarcom" class="fb" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
       <a href="https://www.youtube.com/@medankabar" class="yt" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
       <a href="https://www.threads.com/@medankabar" class="threads" target="_blank" aria-label="Threads"><i class="fa-brands fa-threads"></i></a>
-      <a href="https://www.tiktok.com/@medankabar.com?utm_campaign=linkinbio&utm_medium=referral&utm_source=later-linkinbio" class="tiktok" target="_blank" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+      <a href="https://www.tiktok.com/@medankabar.com?_r=1&_t=ZS-95ltcP9pP3R" class="tiktok" target="_blank" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
       <a href="https://api.whatsapp.com/send/?phone=%2B6285358249709&type=phone_number&app_absent=0" class="wa" target="_blank" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
     </nav>
 
@@ -521,17 +525,14 @@
   </div>
 
   <script>
-    // --- MODE PRODUKSI: RULES ---
-    const isProduction = true; // Set ke 'false' jika Anda sedang mengedit ulang kode ini di komputer
+    const isProduction = true; 
     if (isProduction) {
-        // Menonaktifkan console output agar log Firebase/sistem tidak bocor di browser pengunjung
         console.log = function() {};
         console.warn = function() {};
         console.error = function() {};
         console.info = function() {};
     }
 
-    // --- KONFIGURASI FIREBASE FIRESTORE ---
     const firebaseConfig = {
       apiKey: "AIzaSyDhvDFvFyRd3yfqRNxyavJCnDOADzgAfJY",
       authDomain: "cookie-e63fc.firebaseapp.com",
@@ -569,16 +570,26 @@
     function toggleMode() {
       const currentlyLight = document.documentElement.classList.contains('light-mode');
       applyMode(!currentlyLight);
-      isManualOverride = true;
+      isManualOverride = true; // Tandai bahwa klik dilakukan manual
     }
 
-    // --- FUNGSI MODAL ---
+    // --- FUNGSI OTOMATIS MODE BERDASARKAN JAM ---
+    function checkAutoMode() {
+      if (isManualOverride) return; // Jangan ubah jika pengguna sudah setting secara manual
+      
+      const hour = new Date().getHours();
+      // Light Mode = Jam 06:00 sampai 17:59
+      // Dark Mode = Jam 18:00 sampai 05:59
+      const isDayTime = (hour >= 6 && hour < 18);
+      
+      applyMode(isDayTime);
+    }
+
     const modal = document.getElementById('privacyModal');
     function openModal() { modal.classList.add('active'); }
     function closeModal() { modal.classList.remove('active'); }
     window.onclick = function(event) { if (event.target == modal) { closeModal(); } }
 
-    // --- FUNGSI COOKIE CONSENT ---
     const cookieBanner = document.getElementById('cookieBanner');
 
     function checkCookieConsent() {
@@ -602,7 +613,6 @@
           cookieBanner.style.display = 'none';
           cookieBanner.remove();
       }
-
       document.cookie = "medanKabarCookieConsent=accepted; max-age=" + (60 * 60 * 24 * 365) + "; path=/; SameSite=Lax";
 
       if (db) {
@@ -613,9 +623,7 @@
             language: navigator.language || "Unknown",
             status: "accepted"
         }).then(() => {
-            // Berhasil (dihilangkan dari console mode produksi)
         }).catch((error) => {
-            // Gagal senyap (silent fail) tanpa merusak web
         });
       }
     }
@@ -625,6 +633,9 @@
       const loader = document.getElementById('loader');
       const content = document.getElementById('mainContent');
       const logoWrap = document.getElementById('logoWrap');
+
+      checkAutoMode(); // Panggil pengecekan jam pertama kali
+      setInterval(checkAutoMode, 60000); // Cek secara berkala tiap 1 menit
 
       checkCookieConsent();
 
@@ -648,7 +659,7 @@
       }, 1500);
     });
 
-    // --- SKRIP ANTI-COPY PASTE (DIPERKETAT UNTUK PRODUKSI) ---
+    // --- SKRIP ANTI-COPY PASTE ---
     document.addEventListener('contextmenu', event => event.preventDefault());
     document.addEventListener('selectstart', event => event.preventDefault());
     document.addEventListener('dragstart', event => event.preventDefault());
