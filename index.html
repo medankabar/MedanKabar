@@ -41,7 +41,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: 100dvh; /* Menggunakan dvh agar lebih akurat dengan UI mobile browser */
+      min-height: 100dvh;
       overflow-x: hidden;
       transition: background-color 0.6s ease, color 0.6s ease;
       cursor: default; 
@@ -85,7 +85,7 @@
     /* --- TOMBOL MODE & LOADER --- */
     .toggle-mode {
       position: fixed;
-      top: max(20px, env(safe-area-inset-top)); /* Safe area top untuk iPhone notch */
+      top: max(20px, env(safe-area-inset-top)); 
       right: 20px;
       background: var(--btn-surface);
       color: var(--text);
@@ -126,7 +126,6 @@
     /* --- KONTEN UTAMA --- */
     .container {
       margin-top: 40px; 
-      /* Menambahkan env(safe-area-inset-bottom) agar tidak tertutup indikator home iPhone */
       padding: 2rem 1.5rem calc(2rem + env(safe-area-inset-bottom));
       width: 100%;
       max-width: 480px;
@@ -412,7 +411,10 @@
       transition: bottom 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
     }
 
-    .cookie-banner.show { bottom: max(25px, env(safe-area-inset-bottom)); }
+    /* Penyesuaian jarak bawah untuk browser Instagram/TikTok */
+    .cookie-banner.show { 
+      bottom: calc(25px + env(safe-area-inset-bottom, 0px)); 
+    }
 
     .cookie-icon {
       font-size: 2.5rem;
@@ -453,7 +455,6 @@
 
     @media (max-width: 768px) {
       .container { 
-        /* Safe area diinject kembali khusus mobile view */
         padding: 1.5rem 1rem calc(1.5rem + env(safe-area-inset-bottom)); 
       }
       .logo { width: 100px; height: 100px; }
@@ -570,16 +571,14 @@
     function toggleMode() {
       const currentlyLight = document.documentElement.classList.contains('light-mode');
       applyMode(!currentlyLight);
-      isManualOverride = true; // Tandai bahwa klik dilakukan manual
+      isManualOverride = true; 
     }
 
     // --- FUNGSI OTOMATIS MODE BERDASARKAN JAM ---
     function checkAutoMode() {
-      if (isManualOverride) return; // Jangan ubah jika pengguna sudah setting secara manual
+      if (isManualOverride) return; 
       
       const hour = new Date().getHours();
-      // Light Mode = Jam 06:00 sampai 17:59
-      // Dark Mode = Jam 18:00 sampai 05:59
       const isDayTime = (hour >= 6 && hour < 18);
       
       applyMode(isDayTime);
@@ -592,11 +591,19 @@
 
     const cookieBanner = document.getElementById('cookieBanner');
 
+    // --- DIPERBARUI: LOGIKA PENGECEKAN COOKIE & LOCALSTORAGE ---
     function checkCookieConsent() {
+      // Cek apakah cookie browser tersedia
       const cookies = document.cookie.split(';');
-      const isConsented = cookies.some(item => item.trim().startsWith('medanKabarCookieConsent='));
+      const isCookieConsented = cookies.some(item => item.trim().startsWith('medanKabarCookieConsent='));
       
-      if (isConsented) {
+      // Cek apakah data tersimpan di LocalStorage (Cadangan untuk IG In-App Browser)
+      let isLocalConsented = false;
+      try {
+          isLocalConsented = localStorage.getItem('medanKabarCookieConsent') === 'accepted';
+      } catch (e) { /* Abaikan jika localStorage diblokir */ }
+      
+      if (isCookieConsented || isLocalConsented) {
         if(cookieBanner) {
             cookieBanner.style.display = 'none';
             cookieBanner.remove();
@@ -613,7 +620,16 @@
           cookieBanner.style.display = 'none';
           cookieBanner.remove();
       }
+      
+      // 1. Simpan ke Cookie biasa
       document.cookie = "medanKabarCookieConsent=accepted; max-age=" + (60 * 60 * 24 * 365) + "; path=/; SameSite=Lax";
+      
+      // 2. Simpan ke LocalStorage (Ini yang menyelamatkan saat dibuka via IG/TikTok)
+      try {
+          localStorage.setItem('medanKabarCookieConsent', 'accepted');
+      } catch (e) {
+          console.warn("LocalStorage tidak tersedia.");
+      }
 
       if (db) {
         db.collection("cookie_consents").add({
@@ -634,8 +650,8 @@
       const content = document.getElementById('mainContent');
       const logoWrap = document.getElementById('logoWrap');
 
-      checkAutoMode(); // Panggil pengecekan jam pertama kali
-      setInterval(checkAutoMode, 60000); // Cek secara berkala tiap 1 menit
+      checkAutoMode(); 
+      setInterval(checkAutoMode, 60000); 
 
       checkCookieConsent();
 
